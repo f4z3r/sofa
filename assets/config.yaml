@@ -1,0 +1,30 @@
+namespaces:
+  test:
+    commands:
+      this:
+        description: "This"
+        command: "echo '{{ world }}'"
+        tags:
+        - some
+        - tags
+        parameters:
+          world:
+            default: "Jakob"
+            description: "Enter world"
+            choices:
+            - Jakob
+            - Other
+            exclusive: false
+            mapping:
+              Jakob: "this is jakob"
+  other:
+    commands:
+      this:
+        description: "This"
+        command: "echo '{{ world }}'"
+        parameters:
+          world:
+            default: "Jakob"
+            description: "Enter world"
+config:
+  shell: bash
