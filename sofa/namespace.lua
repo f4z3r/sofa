@@ -1,12 +1,16 @@
+local string = require("string")
+
+local utils = require("sofa.utils")
+
 local namespace = {}
 
 ---@class Parameter
----@field private name string
----@field private description string
+---@field name string
+---@field prompt string
 ---@field private default any?
----@field private choices any[]
----@field private exclusive boolean
----@field private mapping { [string]: any }
+---@field private choices any[]?
+---@field private exclusive boolean?
+---@field private mapping { [string]: any }?
 local Parameter = {}
 
 ---@param name string
@@ -20,18 +24,11 @@ function Parameter:new(name, o)
   return o
 end
 
----return the parameter description
----@return string
-function Parameter:desc()
-  return self.description or self.name
-end
-
 function Parameter:get_default()
   return self.default and tostring(self.default) or nil
 end
 
 function Parameter:get_choices()
-  -- TODO add default to choices
   local res = {}
   for _, choice in ipairs(self.choices or {}) do
     res[#res + 1] = tostring(choice)
@@ -43,15 +40,16 @@ function Parameter:get_exclusive()
   return self.exclusive or false
 end
 
-function Parameter:get_mapped_values(key)
-  return self.mapping[key] or key
+function Parameter:get_mapped_value(key)
+  local mapping = self.mapping or {}
+  return mapping[key] or key
 end
 
 ---@class Command
----@field private name string
----@field private description string
+---@field name string
+---@field description string?
 ---@field command string
----@field tags string[]
+---@field private tags string[]?
 ---@field private parameters { [string]: Parameter }
 local Command = {}
 
@@ -62,18 +60,13 @@ function Command:new(name, o)
   o.name = name
   o.tags = o.tags or {} -- set default tags
   local params = o.parameters
-  for p_name, param in pairs(params) do
+  o.parameters = {}
+  for p_name, param in pairs(params or {}) do
     o.parameters[p_name] = Parameter:new(p_name, param)
   end
   setmetatable(o, self)
   self.__index = self
   return o
-end
-
----return the command description
----@return string
-function Command:desc()
-  return self.description or self.name
 end
 
 ---return the arguments by name stored within a command
@@ -85,11 +78,26 @@ function Command:get_args()
   for arg in args do
     res[#res + 1] = arg
   end
-  return res
+  return utils.deduplicate(res)
+end
+
+---return the tags for that command
+---@return string[]
+function Command:get_tags()
+  return self.tags or {}
 end
 
 function Command:get_param(name)
   return self.parameters[name] or Parameter:new(name, {})
+end
+
+function Command:substitute(params)
+  local res = self.command
+  for param, value in pairs(params) do
+    local pattern = string.format("{{%%s*%s%%s*}}", param)
+    res = res:gsub(pattern, value)
+  end
+  return res
 end
 
 ---@class Namespace
@@ -109,18 +117,6 @@ function Namespace:new(name, o)
   setmetatable(o, self)
   self.__index = self
   return o
-end
-
----return the name of a command by its description
----@param desc string
----@return string?
-function Namespace:get_command_by_desc(desc)
-  for name, cmd in pairs(self.commands) do
-    if cmd:desc() == desc then
-      return name
-    end
-  end
-  return nil
 end
 
 namespace.Namespace = Namespace

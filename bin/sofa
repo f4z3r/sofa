@@ -1,6 +1,3 @@
 #!/usr/bin/env luajit
 
-local params = { ... }
-
-local sofa = require("sofa")
-return sofa.run(params)
+require("sofa")

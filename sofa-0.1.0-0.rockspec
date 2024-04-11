@@ -41,9 +41,6 @@ build = {
   type = "builtin",
   modules = {
     ["sofa"] = "sofa/init.lua",
-    ["sofa.rofi"] = "sofa/rofi.lua",
-    ["sofa.config"] = "sofa/config.lua",
-    ["sofa.namespace"] = "sofa/namespace.lua",
   },
   install = {
     bin = {

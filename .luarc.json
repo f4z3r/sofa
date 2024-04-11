@@ -1,0 +1,9 @@
+{
+    "diagnostics.unusedLocalExclude": [
+        "_*"
+    ],
+    "doc.privateName": [
+        "_*"
+    ]
+}
+

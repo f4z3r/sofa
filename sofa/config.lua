@@ -1,5 +1,4 @@
 local io = require("io")
-local string = require("string")
 
 local yaml = require("lyaml")
 
@@ -7,10 +6,6 @@ local namespace = require("sofa.namespace")
 
 local DEFAULT_CONFIG_PATH = "~/.config/sofa/config.yaml"
 local CONFIG_ENV_VAR = "SOFA_CONFIG"
-
-local config = {}
-
-config.PROG = "sofa"
 
 local function get_default_env(name, default)
   local val = os.getenv(name)
@@ -25,11 +20,8 @@ local function expand_home(path)
   return path:gsub("~", home)
 end
 
-local config_file = expand_home(get_default_env(CONFIG_ENV_VAR, DEFAULT_CONFIG_PATH))
-
-config.ENV = string.format("%s=%s", CONFIG_ENV_VAR, config_file)
-
 local function read_config()
+  local config_file = expand_home(get_default_env(CONFIG_ENV_VAR, DEFAULT_CONFIG_PATH))
   local fh = assert(io.open(config_file, "r"))
   local content = fh:read("*a")
   fh:close()
@@ -45,6 +37,4 @@ end
 ---@class Config
 ---@field namespaces { [string]: Namespace }
 ---@field config table
-config.CONFIG = read_config()
-
-return config
+return read_config()

@@ -1,30 +1,32 @@
 namespaces:
-  test:
+  git:
     commands:
-      this:
-        description: "This"
-        command: "echo '{{ world }}'"
-        tags:
-        - some
-        - tags
+      commit:
+        command: git commit -m "{{ message }}" --trailer "Relates-To={{ issue }}"
+        description: git commit
         parameters:
-          world:
-            default: "Jakob"
-            description: "Enter world"
-            choices:
-            - Jakob
-            - Other
-            exclusive: false
-            mapping:
-              Jakob: "this is jakob"
+          message:
+            prompt: "Enter commit message"
+          issue:
+            default: "#123"
   other:
     commands:
-      this:
-        description: "This"
+      that:
         command: "echo '{{ world }}'"
+        description: "This is some amazing stuff"
+        tags:
+        - tag1
+        - tag2
         parameters:
           world:
-            default: "Jakob"
-            description: "Enter world"
+            prompt: "Enter world"
+            default: "World"
+            choices:
+            - test
+            - other test
+            exclusive: true
+            mapping:
+              test: "this gets returned"
+
 config:
   shell: bash
