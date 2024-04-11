@@ -42,7 +42,9 @@ local function read_config()
   return conf
 end
 
--- avoid re-reading the configuration
+---@class Config
+---@field namespaces { [string]: Namespace }
+---@field config table
 config.CONFIG = read_config()
 
 return config

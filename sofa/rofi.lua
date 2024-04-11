@@ -1,3 +1,4 @@
+local string = require("string")
 local table = require("table")
 
 local config = require("sofa.config")
@@ -24,17 +25,30 @@ function rofi.set_prompt(prompt)
   print(NUL_SEPARATOR .. "prompt" .. FIELD_SEPARATOR .. prompt)
 end
 
-function rofi.set_exclusive()
-  print(NUL_SEPARATOR .. "no-custom" .. FIELD_SEPARATOR .. "true")
+function rofi.set_exclusive(val)
+  if val == nil then
+    val = true
+  end
+  print(NUL_SEPARATOR .. "no-custom" .. FIELD_SEPARATOR .. tostring(val))
 end
 
 function rofi.set_data(data)
+  -- TODO improve this, escaping currently no = or ; supported in values
   local res = {}
   for k, v in pairs(data) do
     res[#res + 1] = k .. "=" .. tostring(v)
   end
-  -- TODO improve this
   print(NUL_SEPARATOR .. "data" .. FIELD_SEPARATOR .. table.concat(res, ";"))
+end
+
+function rofi.get_data(data)
+  local res = {}
+  local matches = data:gmatch("([^;]+)")
+  for match in matches do
+    local k, v = string.match(match, "^(.+)=(.+)$")
+    res[k] = v
+  end
+  return res
 end
 
 function rofi.command_choices()
@@ -50,8 +64,20 @@ function rofi.command_choices()
   end
 end
 
+---comment
+---@param param Parameter
+function rofi.choose_param(param)
+  rofi.set_exclusive(param:get_exclusive())
+  local choices = param:get_choices()
+  local default = param:get_default()
+  for _, choice in ipairs(choices) do
+    -- what does active do?
+    print(choice)
+  end
+end
+
 function rofi.split_command_choice(choice)
-  local ns, cmd = choice:match("^(.*)"..COMMAND_SEPARATOR.."(.*)$")
+  local ns, cmd = choice:match("^(.*)" .. COMMAND_SEPARATOR .. "(.*)$")
   return ns, cmd
 end
 
