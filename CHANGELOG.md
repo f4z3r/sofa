@@ -1,5 +1,10 @@
 # Changelog
 
+## Version `0.2.2`
+
+Fixes:
+- Correctly pick default value on parameter if none is passed.
+
 ## Version `0.2.1`
 
 Fixes:

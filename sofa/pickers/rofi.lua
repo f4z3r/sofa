@@ -131,7 +131,7 @@ function Rofi:pick_parameter(parameter, command)
   if choice == "" and default then
     choice = default
   end
-  return parameter:get_mapped_value(pick)
+  return parameter:get_mapped_value(choice)
 end
 
 rofi.Rofi = Rofi
