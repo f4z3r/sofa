@@ -68,11 +68,12 @@ end
 
 ---return the command that the user picked
 ---@param namespaces { [string]: Namespace }
+---@param interactive boolean
 ---@return Command
-function Rofi:pick_command(namespaces)
+function Rofi:pick_command(namespaces, interactive)
   local choices = {}
   for ns_name, ns in pairs(namespaces) do
-    for cmd_name, cmd in pairs(ns.commands) do
+    for cmd_name, cmd in pairs(ns:get_commands(interactive)) do
       local tags = table.concat(cmd:get_tags(), " ")
       local options = {}
       if tags then
@@ -87,11 +88,10 @@ function Rofi:pick_command(namespaces)
   end
   local pick = self:_pick("Command", choices, { only_match = true, case_insensitive = true, markup = true })
   local namespace, command = pick:match("^(.+)" .. COMMAND_SEPARATOR .. "(.+) <span")
-  -- command had no description
   if not namespace then
     namespace, command = pick:match("^(.+)" .. COMMAND_SEPARATOR .. "(.+)$")
   end
-  return namespaces[namespace].commands[command]
+  return namespaces[namespace]:get_commands(interactive)[command]
 end
 
 ---returns the value of a parameter
@@ -101,19 +101,30 @@ end
 function Rofi:pick_parameter(parameter, command)
   local prompt = parameter.prompt or parameter.name
   local choices = parameter:get_choices()
+  local markup_choices = {}
+  for _, choice in ipairs(choices) do
+    local substitute = parameter:get_mapped_value(choice)
+    if substitute == choice then
+      markup_choices[#markup_choices+1] = choice
+    else
+      markup_choices[#markup_choices+1] = string.format('%s <span size="small"><i>(%s)</i></span>', choice, substitute)
+    end
+  end
   command = command:gsub(
     string.format("{{%%s*%s%%s*}}", parameter.name),
     string.format('<span foreground="red">{{ %s }}</span>', parameter.name)
   )
-  local pick = self:_pick(prompt, choices, {
+  local pick = self:_pick(prompt, markup_choices, {
+    markup = true,
     no_custom = parameter:get_exclusive(),
     default = parameter:get_default(),
     case_insensitive = true,
     mesg = "Command: " .. command,
   })
+  local choice = pick:match("^(.+) <span") or pick
   local default = parameter:get_default()
-  if pick == "" and default then
-    pick = default
+  if choice == "" and default then
+    choice = default
   end
   return parameter:get_mapped_value(pick)
 end

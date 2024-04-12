@@ -1,32 +1,45 @@
 namespaces:
+  wifi:
+    commands:
+      connect:
+        command: nmcli d wifi connect '{{ network }}'
+        description: Connect to a favourite wifi network.
+        tags:
+        - local
+        - clean
+        parameters:
+          network:
+            prompt: Choose a network
+            choices:
+            - home
+            - work
+            mapping:
+              home: abc-123456
+              work: office-wifi-other
   git:
     commands:
-      commit:
-        command: git commit -m "{{ message }}" --trailer "Relates-To={{ issue }}"
-        description: git commit
-        parameters:
-          message:
-            prompt: "Enter commit message"
-          issue:
-            default: "#123"
-  other:
-    commands:
-      that:
-        command: "echo '{{ world }}'"
-        description: "This is some amazing stuff"
+      prune-branckes:
+        command: git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == "[gone]" { print $1 }' | xargs -r git branch -D
+        description: Removes all local branches that no longer track an upstream. Run after pruning the remote.
+        interactive: true
         tags:
-        - tag1
-        - tag2
-        parameters:
-          world:
-            prompt: "Enter world"
-            default: "World"
-            choices:
-            - test
-            - other test
-            exclusive: true
-            mapping:
-              test: "this gets returned"
-
+        - local
+        - clean
+  docker:
+    commands:
+      prune-containers:
+        command: docker container list -a | perl -lane 'print @F[0] if ($_ =~ /Exited/ and $_ !~ /k3d/)' | xargs -r docker rm
+        description: Delete all exited containers
+        interactive: true
+        tags:
+        - local
+        - clean
+      prune-images:
+        command: docker images | tail -n+2 | perl -lane 'print @F[2] if @F[1] =~ /<none>/' | xargs -r docker rmi
+        description: Delete all container images missing a tag
+        interactive: true
+        tags:
+        - local
+        - clean
 config:
-  shell: bash
+  shell: zsh

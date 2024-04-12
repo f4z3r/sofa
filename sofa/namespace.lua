@@ -58,6 +58,7 @@ end
 ---@field name string
 ---@field description string?
 ---@field command string
+---@field private interactive boolean
 ---@field private tags string[]?
 ---@field private parameters { [string]: Parameter }
 local Command = {}
@@ -103,6 +104,12 @@ function Command:get_param(name)
   return self.parameters[name] or Parameter:new(name, {})
 end
 
+---return whether the command should be run in interactive mode
+---@return boolean
+function Command:is_interactive()
+  return self.interactive or false
+end
+
 ---substitute the parameters passed into the command
 ---@param params { [string]: string }
 ---@return string
@@ -117,7 +124,7 @@ end
 
 ---@class Namespace
 ---@field name string
----@field commands { [string]: Command }
+---@field private commands { [string]: Command }
 local Namespace = {}
 
 ---@param name string
@@ -132,6 +139,19 @@ function Namespace:new(name, o)
   setmetatable(o, self)
   self.__index = self
   return o
+end
+
+---return commands based on whether they are interactive
+---@param interactive boolean
+---@return { [string]: Command }
+function Namespace:get_commands(interactive)
+  local commands = {}
+  for name, cmd in pairs(self.commands) do
+    if cmd:is_interactive() == interactive then
+      commands[name] = cmd
+    end
+  end
+  return commands
 end
 
 namespace.Namespace = Namespace
