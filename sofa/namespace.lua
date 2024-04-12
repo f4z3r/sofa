@@ -24,10 +24,14 @@ function Parameter:new(name, o)
   return o
 end
 
+---return default set for this parameter, if any
+---@return string|nil
 function Parameter:get_default()
   return self.default and tostring(self.default) or nil
 end
 
+---return choices set of this parameter
+---@return string[]
 function Parameter:get_choices()
   local res = {}
   for _, choice in ipairs(self.choices or {}) do
@@ -36,10 +40,15 @@ function Parameter:get_choices()
   return res
 end
 
+---return whether the exclusive flag was set for this parameter
+---@return boolean
 function Parameter:get_exclusive()
   return self.exclusive or false
 end
 
+---return the mapped value for the provided choice
+---@param key string
+---@return string
 function Parameter:get_mapped_value(key)
   local mapping = self.mapping or {}
   return mapping[key] or key
@@ -87,10 +96,16 @@ function Command:get_tags()
   return self.tags or {}
 end
 
+---return the registered paramter of the given name
+---@param name string
+---@return Parameter
 function Command:get_param(name)
   return self.parameters[name] or Parameter:new(name, {})
 end
 
+---substitute the parameters passed into the command
+---@param params { [string]: string }
+---@return string
 function Command:substitute(params)
   local res = self.command
   for param, value in pairs(params) do

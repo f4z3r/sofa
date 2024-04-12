@@ -25,7 +25,6 @@ description = {
 
 dependencies = {
   "lua == 5.1",
-  "argparse >= 0.7",
   "lyaml >= 6.2",
 }
 
@@ -40,7 +39,12 @@ dependencies = {
 build = {
   type = "builtin",
   modules = {
-    ["sofa"] = "sofa/init.lua",
+    ["sofa"]              = "sofa/init.lua",
+    ["sofa.pickers.rofi"] = "sofa/pickers/rofi.lua",
+    ["sofa.config"]       = "sofa/config.lua",
+    ["sofa.engine"]       = "sofa/engine.lua",
+    ["sofa.namespace"]    = "sofa/namespace.lua",
+    ["sofa.utils"]        = "sofa/utils.lua",
   },
   install = {
     bin = {

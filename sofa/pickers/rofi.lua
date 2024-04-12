@@ -12,6 +12,9 @@ local COMMAND_SEPARATOR = " > "
 ---@class Rofi
 local Rofi = {}
 
+---create a new Rofi picker based on configuration
+---@param _config table
+---@return Rofi
 function Rofi:new(_config)
   local o = {}
   setmetatable(o, self)
