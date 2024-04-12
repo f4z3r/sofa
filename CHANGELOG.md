@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## Version `0.2.0`
 
 Features:
 - Support for an interactive mode with `-i` flag to enable embedding into shells.
