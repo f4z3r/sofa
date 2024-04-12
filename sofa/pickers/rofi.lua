@@ -86,6 +86,11 @@ function Rofi:pick_command(namespaces, interactive)
       choices[#choices + 1] = self:_add_row_options(choice, options)
     end
   end
+  if #choices == 0 then
+    -- add proper logging
+    print("no commands found, aborting")
+    os.exit(1)
+  end
   local pick = self:_pick("Command", choices, { only_match = true, case_insensitive = true, markup = true })
   local namespace, command = pick:match("^(.+)" .. COMMAND_SEPARATOR .. "(.+) <span")
   if not namespace then

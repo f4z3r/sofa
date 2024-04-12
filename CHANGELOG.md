@@ -1,5 +1,10 @@
 # Changelog
 
+## Version `0.2.1`
+
+Fixes:
+- Do not panic if no commands are found.
+
 ## Version `0.2.0`
 
 Features:
