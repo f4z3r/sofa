@@ -4,18 +4,22 @@ namespaces:
       connect:
         command: nmcli d wifi connect '{{ network }}'
         description: Connect to a favourite wifi network.
+        interactive: false
         tags:
         - local
         - clean
         parameters:
           network:
             prompt: Choose a network
+            default: home
+            exclusive: false
             choices:
             - home
             - work
             mapping:
               home: abc-123456
               work: office-wifi-other
+              other: some-other-wifi
   git:
     commands:
       prune-branckes:

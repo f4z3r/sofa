@@ -9,16 +9,23 @@ A command execution engine powered by `rofi`.
 
 ---
 
+**Table of Contents:**
+
 <!--toc:start-->
 - [sofa](#sofa)
+  - [Example](#example)
   - [Installation](#installation)
+  - [Integration](#integration)
+    - [Bash](#bash)
+    - [Zsh](#zsh)
+    - [Fish](#fish)
   - [Configuration](#configuration)
-    - [Namespaces](#namespaces)
-    - [Commands](#commands)
   - [Roadmap](#roadmap)
 <!--toc:end-->
 
 ---
+
+## Example
 
 ## Installation
 
@@ -31,40 +38,75 @@ Install via `luarocks`:
 luarocks install sofa
 ```
 
-## Configuration
+## Integration
 
-> [!WARNING]
-> A configuration must be set, currently `sofa` cannot handle not having a configuration.
+This section shows how to integrate `sofa` with your favourite shell. The following examples
+showcase how to bind `sofa` to <kbd>Contrl</kbd> + <kbd>o</kbd>. Update the snippets to bind to your
+preferred keys.
 
-By default the configuration location is at `~/.config/sofa/config.yaml`. This can be set to a
-different path using the `SOFA_CONFIG` environment variable.
+### Bash
 
-### Namespaces
+Add the following lines to your `bash` configuration:
 
-Namespace provide a way to organise your commands. They are provided as follows in the configuration
-file:
+```sh
+__interactive_sofa () {
+    tput rmkx
+    output="$(sofa -i)"
+    tput smkx
 
-```yaml
-namespaces:
-  <name1>:
-    commands:
-      ...
-  <name2>:
-    commands:
-      ...
+    READLINE_LINE=${output}
+    READLINE_POINT=${#READLINE_LINE}
+}
+
+bind -x '"\C-o": __interactive_sofa'
 ```
 
-where `<name1>` and `<name2>` are the name of the namespaces.
+### Zsh
 
-Namespaces have the following fields:
+Add the following lines to your `zsh` configuration:
 
-- `commands`: a map of [commands](#commands) contained in the namespace.
+```sh
+autoload -U add-zsh-hook
 
-### Commands
+function _interactive_sofa() {
+  emulate -L zsh
+  zle -I
+
+  echoti rmkx
+  output=$(sofa --list)
+  echoti smkx
+
+  if [[ -n $output ]]; then
+    LBUFFER=$output
+  fi
+
+  zle reset-prompt
+}
+
+zle -N _interactive_sofa_widget _interactive_sofa
+bindkey '^o' _interactive_sofa_widget
+```
+
+### Fish
+
+Add the following lines to your `fish` configuration:
+
+```fish
+# Hoard bindings
+function __interactive_sofa
+    set output (sofa -i)
+    commandline -j $output
+end
+
+bind \co __interactive_sofa
+```
+
+## Configuration
+
+See [`docs/configuration.md`](./docs/configuration.md).
 
 ## Roadmap
 
-- [ ] add documentation
 - [ ] add configuration validation
 - [ ] add logging for better reporting
 - [ ] add configuration options
