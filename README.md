@@ -5,7 +5,7 @@
 ![LuaRocks](https://img.shields.io/luarocks/v/f4z3r/sofa?logo=lua&link=https%3A%2F%2Fluarocks.org%2Fmodules%2Ff4z3r%2Fsofa)
 ![LuaJIT](https://img.shields.io/badge/LuaJIT-_?logo=lua&labelColor=blue&color=blue)
 
-A command execution engine powered by `rofi`.
+A command execution engine powered by [`rofi`](https://github.com/davatorium/rofi).
 
 ---
 
@@ -31,6 +31,8 @@ A command execution engine powered by `rofi`.
 
 > [!NOTE]
 > Currently sofa is only tested with LuaJIT.
+
+Of course, this is dependent on `rofi` being installed on your system.
 
 Install via `luarocks`:
 
