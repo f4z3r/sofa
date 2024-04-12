@@ -13,7 +13,9 @@ A command execution engine powered by [`rofi`](https://github.com/davatorium/rof
 
 <!--toc:start-->
 - [sofa](#sofa)
-  - [Example](#example)
+  - [Examples](#examples)
+    - [For Snippets Management](#for-snippets-management)
+    - [For Dynamic Bookmarks](#for-dynamic-bookmarks)
   - [Installation](#installation)
   - [Integration](#integration)
     - [Bash](#bash)
@@ -25,7 +27,59 @@ A command execution engine powered by [`rofi`](https://github.com/davatorium/rof
 
 ---
 
-## Example
+## Examples
+
+### For Snippets Management
+
+You can use `sofa` for standard snippets management. Use the [integration](#integration) described
+below, and have configuration such as:
+
+<details>
+<summary>Configuration</summary>
+
+```yaml
+namespaces:
+  utils:
+    commands:
+      echo:
+        command: echo "Hello {{ world }}. Welcome to my little place of the {{ world }}"
+        description: Print a nice little test string
+        interactive: true
+        tags:
+        - shell
+```
+</details>
+
+![Shell](./assets/shell.gif)
+
+### For Dynamic Bookmarks
+
+Or launch `sofa` without interactive mode from a shortcut manager such as `sxhkd`:
+
+<details>
+<summary>Configuration</summary>
+
+```yaml
+namespaces:
+  bookmarks:
+    commands:
+      github:
+        command: xdg-open "https://github.com/{{ user }}/{{ project }}"
+        description: Open a GitHub project in the browser
+        tags:
+        - github
+        - coding
+        parameters:
+          user:
+            default: f4z3r
+            prompt: Choose user
+          project:
+            prompt: Choose project
+```
+
+</details>
+
+![Bookmarks Launcher](./assets/bookmarks.gif)
 
 ## Installation
 
@@ -75,7 +129,7 @@ function _interactive_sofa() {
   zle -I
 
   echoti rmkx
-  output=$(sofa --list)
+  output=$(sofa -i)
   echoti smkx
 
   if [[ -n $output ]]; then
