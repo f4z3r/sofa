@@ -1,5 +1,6 @@
 local io = require("io")
 local os = require("os")
+local string = require("string")
 
 local utils = {}
 
@@ -19,12 +20,17 @@ end
 
 ---run a command return the output
 ---@param cmd string
----@return string
+---@return number exit code
+---@return string stdout from the command
 function utils.run(cmd)
-  local ph = assert(io.popen(cmd, "r"))
-  local out = ph:read("*a")
-  ph:close()
-  return out
+  local filename = os.tmpname()
+  local command = string.format("%s > %s", cmd, filename)
+  local exit = os.execute(command)
+  local fh = assert(io.open(filename, "r"))
+  local out = fh:read("*a")
+  fh:close()
+  os.remove(filename)
+  return exit, out
 end
 
 ---write a temporary file with some content

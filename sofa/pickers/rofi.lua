@@ -38,9 +38,6 @@ function Rofi:_pick(prompt, choices, options)
   if options.no_custom then
     cmd_parts[#cmd_parts + 1] = "-no-custom"
   end
-  if options.only_match then
-    cmd_parts[#cmd_parts + 1] = "-only-match"
-  end
   if options.markup then
     cmd_parts[#cmd_parts + 1] = "-markup-rows"
   end
@@ -49,8 +46,12 @@ function Rofi:_pick(prompt, choices, options)
     cmd_parts[#cmd_parts + 1] = string.format("-select '%s'", default)
   end
   local command = table.concat(cmd_parts, " ")
-  local response = utils.run(command)
+  local status_code, response = utils.run(command)
   delete()
+  if status_code ~= 0 then
+    -- TODO add logging
+    os.exit(status_code)
+  end
   return utils.trim_whitespace(response)
 end
 
@@ -91,7 +92,7 @@ function Rofi:pick_command(namespaces, interactive)
     print("no commands found, aborting")
     os.exit(1)
   end
-  local pick = self:_pick("Command", choices, { only_match = true, case_insensitive = true, markup = true })
+  local pick = self:_pick("Command", choices, { no_custom = true, case_insensitive = true, markup = true })
   local namespace, command = pick:match("^(.+)" .. COMMAND_SEPARATOR .. "(.+) <span")
   if not namespace then
     namespace, command = pick:match("^(.+)" .. COMMAND_SEPARATOR .. "(.+)$")

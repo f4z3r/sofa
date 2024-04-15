@@ -127,6 +127,13 @@ A parameter of name `<name>` has the following structure.
 
 ## Other Configuration
 
-Currently no other configuration is supported. In the future the `config` block in the
-configuration should support setting the chosen shell for non-interactive command execution, log
-levels, etc.
+This block allows you to configure general settings.
+
+```yaml
+config:
+  shell: zsh
+```
+
+**Optional:**
+- `shell`: configure with what shell the command should be executed with when not running in
+  interactive mode. Can be `bash`, `zsh`, `fish`. Defaults to `bash`.
