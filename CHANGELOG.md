@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+Fixes:
+- Correctly implement exclusive choices selection.
+
 ## Version `0.2.2`
 
 Fixes:

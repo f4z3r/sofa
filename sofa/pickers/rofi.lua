@@ -39,7 +39,7 @@ function Rofi:_pick(prompt, choices, options)
     cmd_parts[#cmd_parts + 1] = "-no-custom"
   end
   if options.only_match then
-    cmd_parts[#cmd_parts + 1] = "-no-custom"
+    cmd_parts[#cmd_parts + 1] = "-only-match"
   end
   if options.markup then
     cmd_parts[#cmd_parts + 1] = "-markup-rows"
