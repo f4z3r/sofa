@@ -147,7 +147,7 @@ end
 function Namespace:get_commands(interactive)
   local commands = {}
   for name, cmd in pairs(self.commands) do
-    if cmd:is_interactive() == interactive then
+    if not interactive or (interactive and cmd:is_interactive()) then
       commands[name] = cmd
     end
   end

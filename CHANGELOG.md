@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+Improvements:
+- Also provide non-interactive commands when launched with `-i`.
+
 Fixes:
 - Correctly implement exclusive choices selection.
 
