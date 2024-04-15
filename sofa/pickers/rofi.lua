@@ -115,9 +115,14 @@ function Rofi:pick_parameter(parameter, command)
       markup_choices[#markup_choices+1] = string.format('%s <span size="small"><i>(%s)</i></span>', choice, substitute)
     end
   end
+  local sub = string.format("{{ %s }}", parameter.name)
+  local default = parameter:get_default()
+  if default then
+    sub = default
+  end
   command = command:gsub(
     string.format("{{%%s*%s%%s*}}", parameter.name),
-    string.format('<span foreground="red">{{ %s }}</span>', parameter.name)
+    string.format('<span foreground="red">%s</span>', sub)
   )
   local pick = self:_pick(prompt, markup_choices, {
     markup = true,
@@ -127,7 +132,6 @@ function Rofi:pick_parameter(parameter, command)
     mesg = "Command: " .. command,
   })
   local choice = pick:match("^(.+) <span") or pick
-  local default = parameter:get_default()
   if choice == "" and default then
     choice = default
   end

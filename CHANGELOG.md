@@ -4,6 +4,7 @@
 
 Improvements:
 - Also provide non-interactive commands when launched with `-i`.
+- Show default in the command substitution if set.
 
 Fixes:
 - Correctly implement exclusive choices selection.
