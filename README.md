@@ -81,6 +81,11 @@ namespaces:
 
 ![Bookmarks Launcher](./assets/bookmarks.gif)
 
+---
+
+My personal `sofa` configuration can be found
+[in my Nix setup](https://github.com/f4z3r/nix/blob/master/home/files/sofa.yaml).
+
 ## Installation
 
 > [!NOTE]
@@ -163,9 +168,15 @@ See [`docs/configuration.md`](./docs/configuration.md).
 
 ## Roadmap
 
+This shows some items I want to support. The list is not in order of priority.
+
 - [ ] add configuration validation
 - [ ] add logging for better reporting
+- [ ] better documentation and screenshots on the capabilities
+- [ ] support dependent choices (i.e. when X chosen for parameter 1, then provides choice list Y
+      for parameter 2)
 - [ ] add configuration options
-  - [ ] execution shell
+  - [x] execution shell
   - [ ] log level
 - [ ] add support for more Lua versions
+- [ ] support executing commands in the background
