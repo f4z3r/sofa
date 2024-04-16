@@ -22,11 +22,7 @@ function Rofi:new(_config)
   return o
 end
 
-function Rofi:_pick(prompt, choices, options)
-  local content = table.concat(choices, "\n")
-  local filename, delete = utils.write_to_tmp(content)
-  prompt = utils.escape_quotes(prompt)
-  local cmd = string.format("rofi -dmenu -input '%s' -p '%s'", filename, prompt)
+local function add_options(cmd, options)
   local cmd_parts = { cmd }
   if options.mesg then
     local mesg = utils.escape_quotes(options.mesg)
@@ -45,11 +41,33 @@ function Rofi:_pick(prompt, choices, options)
     local default = utils.escape_quotes(options.default)
     cmd_parts[#cmd_parts + 1] = string.format("-select '%s'", default)
   end
-  local command = table.concat(cmd_parts, " ")
+  return table.concat(cmd_parts, " ")
+end
+
+function Rofi:_pick_from_cmd(prompt, choices_cmd, options)
+  prompt = utils.escape_quotes(prompt)
+  local cmd = string.format("%s | rofi -dmenu -p '%s'", choices_cmd, prompt)
+  local command = add_options(cmd, options)
+  local status_code, response = utils.run(command)
+  if status_code ~= 0 then
+    -- TODO add logging
+    print("aborting due to rofi exit")
+    os.exit(status_code)
+  end
+  return utils.trim_whitespace(response)
+end
+
+function Rofi:_pick(prompt, choices, options)
+  local content = table.concat(choices, "\n")
+  local filename, delete = utils.write_to_tmp(content)
+  prompt = utils.escape_quotes(prompt)
+  local cmd = string.format("rofi -dmenu -input '%s' -p '%s'", filename, prompt)
+  local command = add_options(cmd, options)
   local status_code, response = utils.run(command)
   delete()
   if status_code ~= 0 then
     -- TODO add logging
+    print("aborting due to rofi exit")
     os.exit(status_code)
   end
   return utils.trim_whitespace(response)
@@ -88,7 +106,7 @@ function Rofi:pick_command(namespaces, interactive)
     end
   end
   if #choices == 0 then
-    -- add proper logging
+    -- TODO: add proper logging
     print("no commands found, aborting")
     os.exit(1)
   end
@@ -100,22 +118,43 @@ function Rofi:pick_command(namespaces, interactive)
   return namespaces[namespace]:get_commands(interactive)[command]
 end
 
+---returns markup defined choices for a parmaters based on `choices` field
+---@param parameter Parameter
+---@return string[]
+function Rofi:_get_choices_for_param(parameter)
+  local choices = parameter:get_choices()
+  local markup_choices = {}
+  for _, choice in ipairs(choices) do
+    local substitute = parameter:get_mapped_value(choice)
+    if substitute == choice then
+      markup_choices[#markup_choices + 1] = choice
+    else
+      markup_choices[#markup_choices + 1] =
+        string.format('%s <span size="small"><i>(%s)</i></span>', choice, substitute)
+    end
+  end
+  return markup_choices
+end
+
+---return the value for a pick given a parameter
+---@param parameter Parameter
+---@param pick string
+---@return string
+function Rofi:_get_value_for_pick(parameter, pick)
+  local default = parameter:get_default()
+  local choice = pick:match("^(.+) <span") or pick
+  if choice == "" and default then
+    choice = default
+  end
+  return parameter:get_mapped_value(choice)
+end
+
 ---returns the value of a parameter
 ---@param parameter Parameter
 ---@param command string
 ---@return string
 function Rofi:pick_parameter(parameter, command)
   local prompt = parameter.prompt or parameter.name
-  local choices = parameter:get_choices()
-  local markup_choices = {}
-  for _, choice in ipairs(choices) do
-    local substitute = parameter:get_mapped_value(choice)
-    if substitute == choice then
-      markup_choices[#markup_choices+1] = choice
-    else
-      markup_choices[#markup_choices+1] = string.format('%s <span size="small"><i>(%s)</i></span>', choice, substitute)
-    end
-  end
   local sub = string.format("{{ %s }}", parameter.name)
   local default = parameter:get_default()
   if default then
@@ -125,18 +164,21 @@ function Rofi:pick_parameter(parameter, command)
     string.format("{{%%s*%s%%s*}}", parameter.name),
     string.format('<span foreground="red">%s</span>', sub)
   )
-  local pick = self:_pick(prompt, markup_choices, {
+  local options = {
     markup = true,
     no_custom = parameter:get_exclusive(),
     default = parameter:get_default(),
     case_insensitive = true,
     mesg = "Command: " .. command,
-  })
-  local choice = pick:match("^(.+) <span") or pick
-  if choice == "" and default then
-    choice = default
+  }
+  local pick = nil
+  if parameter.choices_cmd then
+    pick = self:_pick_from_cmd(prompt, parameter.choices_cmd, options)
+  else
+    local choices = self:_get_choices_for_param(parameter)
+    pick = self:_pick(prompt, choices, options)
   end
-  return parameter:get_mapped_value(choice)
+  return self:_get_value_for_pick(parameter, pick)
 end
 
 rofi.Rofi = Rofi

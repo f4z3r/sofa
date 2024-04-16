@@ -7,6 +7,7 @@ local namespace = {}
 ---@class Parameter
 ---@field name string
 ---@field prompt string
+---@field choices_cmd string?
 ---@field private default any?
 ---@field private choices any[]?
 ---@field private exclusive boolean?

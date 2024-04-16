@@ -6,20 +6,61 @@ namespaces:
         description: Connect to a favourite wifi network.
         interactive: false
         tags:
-        - local
-        - clean
+        - netowrk
         parameters:
           network:
             prompt: Choose a network
-            default: home
-            exclusive: false
+            exclusive: true
+            choices_cmd: 'nmcli --colors no -g ssid d wifi list'
+  nix:
+    commands:
+      rebuild:
+        command: sudo nixos-rebuild {{ type }} --impure --flake .#
+        description: Rebuild nix setup
+        interactive: true
+        tags:
+        - sudo
+        parameters:
+          type:
+            default: switch
+            prompt: How to rebuild
+            exclusive: true
             choices:
-            - home
-            - work
-            mapping:
-              home: abc-123456
-              work: office-wifi-other
-              other: some-other-wifi
+            - switch
+            - reboot
+      clean-generations:
+        command: nix-collect-garbage --delete-older-than {{ days }}d
+        description: Delete old nix generations
+        interactive: true
+        parameters:
+          days:
+            default: 30
+            prompt: Number of days to keep
+  bookmarks:
+    commands:
+      github:
+        command: xdg-open "https://github.com/{{ user }}/{{ project }}"
+        description: Open a GitHub project
+        tags:
+        - browser
+        parameters:
+          user:
+            default: f4z3r
+            prompt: Choose user
+          project:
+            prompt: Choose project
+      nixos:
+        command: xdg-open "https://search.nixos.org/packages?channel={{ channel }}"
+        description: Open NixOS packages and versions
+        tags:
+        - browser
+        parameters:
+          channel:
+            default: unstable
+            prompt: Choose channel
+            choices:
+            - unstable
+            - "23.11"
   git:
     commands:
       prune-branckes:

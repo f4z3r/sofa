@@ -4,6 +4,7 @@
 
 Features:
 - Support setting the execution shell when executing command in non-interactive mode.
+- Support using a command for the choices rather than only a list.
 
 Improvements:
 - Also provide non-interactive commands when launched with `-i`.

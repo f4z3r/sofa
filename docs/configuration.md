@@ -108,6 +108,12 @@ A parameter of name `<name>` has the following structure.
     home: abc-123456
     work: office-wifi-other
     other: some-other-wifi
+# or
+<name>:
+  prompt: Choose a network
+  default: home
+  exclusive: true
+  choices_cmd: 'nmcli --colors no -g ssid d wifi list'
 ```
 
 **Optional:**
@@ -120,6 +126,8 @@ A parameter of name `<name>` has the following structure.
 - `exclusive`: whether to allow entries not provided in `choices`. This only makes if `choices` is
   set. Defaults to `false`.
 - `choices`: a list of available choices for that parameter.
+- `choices_cmd`: a command from which the choices are computed. This takes precedence over
+  `choices`.
 - `mapping`: a mapping which allows to turn a chosen option into another value before applying it to
   the command. In this case, if `other` is manually provided (allowed  even though `other` is not
   in `choices` since `exclusive: false`), the string `some-other-wifi` will get injected into the
