@@ -9,7 +9,7 @@
 
 <!--toc:start-->
 - [Configuration](#configuration)
-  - [Config Location](#config-location)
+  - [Configuration Location](#configuration-location)
   - [Sample](#sample)
   - [Namespaces](#namespaces)
   - [Commands](#commands)
@@ -19,7 +19,7 @@
 
 ---
 
-## Config Location
+## Configuration Location
 
 By default the configuration location is at `~/.config/sofa/config.yaml`. This can be set to a
 different path using the `SOFA_CONFIG` environment variable.
@@ -27,6 +27,9 @@ different path using the `SOFA_CONFIG` environment variable.
 ## Sample
 
 A basic sample configuration can be found under [`assets/config.yaml`](../assets/config.yaml).
+
+My personal `sofa` configuration can be found
+[in my Nix setup](https://github.com/f4z3r/nix/blob/master/home/files/sofa.yaml).
 
 ## Namespaces
 

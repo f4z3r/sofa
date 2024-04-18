@@ -16,6 +16,7 @@ A command execution engine powered by [`rofi`](https://github.com/davatorium/rof
   - [Examples](#examples)
     - [For Snippets Management](#for-snippets-management)
     - [For Dynamic Bookmarks](#for-dynamic-bookmarks)
+    - [Features Preview](#features-preview)
   - [Installation](#installation)
   - [Integration](#integration)
     - [Bash](#bash)
@@ -39,14 +40,28 @@ below, and have configuration such as:
 
 ```yaml
 namespaces:
-  utils:
+  lua:
     commands:
-      echo:
-        command: echo "Hello {{ world }}. Welcome to my little place of the {{ world }}"
-        description: Print a nice little test string
-        interactive: true
+      install-local:
+        command: luarocks --local make --deps-mode {{ deps_mode }} {{ rockspec }}
+        description: Install rock locally
         tags:
-        - shell
+        - local
+        - luarocks
+        interactive: true
+        parameters:
+          deps_mode:
+            default: none
+            exclusive: true
+            prompt: Install dependencies
+            choices:
+            - none
+            - one
+            - all
+            - order
+          rockspec:
+            prompt: Rockspec
+            choices_cmd: fd -tf -c never '.*\.rockspec$' .
 ```
 </details>
 
@@ -80,6 +95,20 @@ namespaces:
 </details>
 
 ![Bookmarks Launcher](./assets/bookmarks.gif)
+
+### Features Preview
+
+Pick a command based on its name, description, and tags:
+
+![Select a command](./assets/select-command.jpg)
+
+Pick arguments based on pre-defined choices. The default choice is shown in the command preview:
+
+![Select a dependency](./assets/select-deps.jpg)
+
+Pick arguments based on some command output. In this case we filter for rockspec files:
+
+![Select a Rockspec](./assets/select-rockspec.jpg)
 
 ---
 
