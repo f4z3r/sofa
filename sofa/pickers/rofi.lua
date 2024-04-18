@@ -1,3 +1,4 @@
+local os = require("os")
 local string = require("string")
 local table = require("table")
 
@@ -50,9 +51,7 @@ function Rofi:_pick_from_cmd(prompt, choices_cmd, options)
   local command = add_options(cmd, options)
   local status_code, response = utils.run(command)
   if status_code ~= 0 then
-    -- TODO add logging
-    print("aborting due to rofi exit")
-    os.exit(status_code)
+    os.exit(1)
   end
   return utils.trim_whitespace(response)
 end
@@ -66,9 +65,7 @@ function Rofi:_pick(prompt, choices, options)
   local status_code, response = utils.run(command)
   delete()
   if status_code ~= 0 then
-    -- TODO add logging
-    print("aborting due to rofi exit")
-    os.exit(status_code)
+    os.exit(1)
   end
   return utils.trim_whitespace(response)
 end
@@ -106,8 +103,6 @@ function Rofi:pick_command(namespaces, interactive)
     end
   end
   if #choices == 0 then
-    -- TODO: add proper logging
-    print("no commands found, aborting")
     os.exit(1)
   end
   local pick = self:_pick("Command", choices, { no_custom = true, case_insensitive = true, markup = true })

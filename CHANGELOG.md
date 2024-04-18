@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## Version `0.3.0`
 
 Features:
 - Support setting the execution shell when executing command in non-interactive mode.
@@ -10,9 +10,11 @@ Improvements:
 - Also provide non-interactive commands when launched with `-i`.
 - Show default in the command substitution if set.
 - Allow to cleanly exit by aborting rofi.
+- Fully stop logging.
 
 Fixes:
 - Correctly implement exclusive choices selection.
+- Return non-zero exit code on aborts.
 
 ## Version `0.2.2`
 

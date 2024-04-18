@@ -171,12 +171,8 @@ See [`docs/configuration.md`](./docs/configuration.md).
 This shows some items I want to support. The list is not in order of priority.
 
 - [ ] add configuration validation
-- [ ] add logging for better reporting
 - [ ] better documentation and screenshots on the capabilities
 - [ ] support dependent choices (i.e. when X chosen for parameter 1, then provides choice list Y
       for parameter 2)
-- [ ] add configuration options
-  - [x] execution shell
-  - [ ] log level
 - [ ] add support for more Lua versions
 - [ ] support executing commands in the background
