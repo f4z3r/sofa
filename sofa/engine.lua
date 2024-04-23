@@ -12,7 +12,7 @@ local ExecutionEngine = {}
 ---@return ExecutionEngine
 function ExecutionEngine:new(config)
   local o = {}
-  o.shell = config.shell or "bash"
+  o.shell = config.shell
   setmetatable(o, self)
   self.__index = self
   return o

@@ -3,9 +3,16 @@ local io = require("io")
 local yaml = require("lyaml")
 
 local namespace = require("sofa.namespace")
+local utils = require("sofa.utils")
 
 local DEFAULT_CONFIG_PATH = "~/.config/sofa/config.yaml"
 local CONFIG_ENV_VAR = "SOFA_CONFIG"
+
+local DEFAULT_CONFIG = {
+  config = {
+    shell = "bash",
+  },
+}
 
 local function get_default_env(name, default)
   local val = os.getenv(name)
@@ -31,6 +38,8 @@ local function read_config()
   for name, cmds in pairs(namespaces) do
     conf.namespaces[name] = namespace.Namespace:new(name, cmds)
   end
+  -- apply default configuration
+  conf.config = utils.apply_defaults(conf.config, DEFAULT_CONFIG.config)
   return conf
 end
 

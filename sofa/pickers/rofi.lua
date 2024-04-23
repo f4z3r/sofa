@@ -90,7 +90,7 @@ function Rofi:pick_command(namespaces, interactive)
   local choices = {}
   for ns_name, ns in pairs(namespaces) do
     for cmd_name, cmd in pairs(ns:get_commands(interactive)) do
-      local tags = table.concat(cmd:get_tags(), " ")
+      local tags = table.concat(cmd.tags, " ")
       local options = {}
       if tags then
         options.meta = tags
@@ -149,7 +149,6 @@ end
 ---@param command string
 ---@return string
 function Rofi:pick_parameter(parameter, command)
-  local prompt = parameter.prompt or parameter.name
   local sub = string.format("{{ %s }}", parameter.name)
   local default = parameter:get_default()
   if default then
@@ -161,12 +160,13 @@ function Rofi:pick_parameter(parameter, command)
   )
   local options = {
     markup = true,
-    no_custom = parameter:get_exclusive(),
+    no_custom = parameter.exclusive,
     default = parameter:get_default(),
     case_insensitive = true,
     mesg = "Command: " .. command,
   }
   local pick = nil
+  local prompt = parameter.prompt
   if parameter.choices_cmd then
     pick = self:_pick_from_cmd(prompt, parameter.choices_cmd, options)
   else

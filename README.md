@@ -195,6 +195,16 @@ bind \co __interactive_sofa
 
 See [`docs/configuration.md`](./docs/configuration.md).
 
+## Development
+
+### Testing
+
+Testing is performed with `busted`:
+
+```bash
+busted .
+```
+
 ## Roadmap
 
 This shows some items I want to support. The list is not in order of priority.

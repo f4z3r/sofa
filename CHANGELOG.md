@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+Improvements:
+- Better handling of default values in the configuration.
+
 ## Version `0.3.0`
 
 Features:

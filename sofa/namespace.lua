@@ -2,6 +2,21 @@ local string = require("string")
 
 local utils = require("sofa.utils")
 
+local DEFAULT_NAMESPACE = {
+  commands = {},
+}
+
+local DEFAULT_COMMAND = {
+  interactive = false,
+  tags = {},
+  parameters = {},
+}
+
+local DEFAULT_PARAMETER = {
+  choices = {},
+  exclusive = false,
+}
+
 local namespace = {}
 
 ---@class Parameter
@@ -10,7 +25,7 @@ local namespace = {}
 ---@field choices_cmd string?
 ---@field private default any?
 ---@field private choices any[]?
----@field private exclusive boolean?
+---@field exclusive boolean
 ---@field private mapping { [string]: any }?
 local Parameter = {}
 
@@ -18,8 +33,9 @@ local Parameter = {}
 ---@param o table?
 ---@return Parameter
 function Parameter:new(name, o)
-  o = o or {}
+  o = utils.apply_defaults(o or {}, DEFAULT_PARAMETER)
   o.name = name
+  o.prompt = o.prompt or o.name
   setmetatable(o, self)
   self.__index = self
   return o
@@ -41,12 +57,6 @@ function Parameter:get_choices()
   return res
 end
 
----return whether the exclusive flag was set for this parameter
----@return boolean
-function Parameter:get_exclusive()
-  return self.exclusive or false
-end
-
 ---return the mapped value for the provided choice
 ---@param key string
 ---@return string
@@ -59,8 +69,8 @@ end
 ---@field name string
 ---@field description string?
 ---@field command string
----@field private interactive boolean
----@field private tags string[]?
+---@field interactive boolean
+---@field tags string[]
 ---@field private parameters { [string]: Parameter }
 local Command = {}
 
@@ -68,8 +78,8 @@ local Command = {}
 ---@param o table
 ---@return Command
 function Command:new(name, o)
+  o = utils.apply_defaults(o, DEFAULT_COMMAND)
   o.name = name
-  o.tags = o.tags or {} -- set default tags
   local params = o.parameters
   o.parameters = {}
   for p_name, param in pairs(params or {}) do
@@ -92,23 +102,11 @@ function Command:get_args()
   return utils.deduplicate(res)
 end
 
----return the tags for that command
----@return string[]
-function Command:get_tags()
-  return self.tags or {}
-end
-
 ---return the registered paramter of the given name
 ---@param name string
 ---@return Parameter
 function Command:get_param(name)
   return self.parameters[name] or Parameter:new(name, {})
-end
-
----return whether the command should be run in interactive mode
----@return boolean
-function Command:is_interactive()
-  return self.interactive or false
 end
 
 ---substitute the parameters passed into the command
@@ -132,6 +130,7 @@ local Namespace = {}
 ---@param o table
 ---@return Namespace
 function Namespace:new(name, o)
+  utils.apply_defaults(o, DEFAULT_NAMESPACE)
   o.name = name
   local cmds = o.commands
   for cmd_name, command in pairs(cmds) do
@@ -148,7 +147,7 @@ end
 function Namespace:get_commands(interactive)
   local commands = {}
   for name, cmd in pairs(self.commands) do
-    if interactive or (not interactive and not cmd:is_interactive()) then
+    if interactive or (not interactive and not cmd.interactive) then
       commands[name] = cmd
     end
   end

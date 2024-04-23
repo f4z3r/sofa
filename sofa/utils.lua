@@ -62,4 +62,38 @@ function utils.deduplicate(tbl)
   return res
 end
 
+---deep copy a table
+---@param tbl table
+---@return table
+function utils.table_copy(tbl)
+  local res = {}
+  for k, v in pairs(tbl) do
+    if type(v) == "table" then
+      res[k] = utils.table_copy(v)
+    else
+      res[k] = v
+    end
+  end
+  return res
+end
+
+---Apply defaults to base
+---@param base table
+---@param defaults table
+---@return table
+function utils.apply_defaults(base, defaults)
+  local res = utils.table_copy(base)
+  for key, default in pairs(defaults) do
+    local value = base[key]
+    if value == nil then
+      res[key] = default
+    elseif type(value) == "table" then
+      res[key] = utils.apply_defaults(value, default)
+    else
+      res[key] = value
+    end
+  end
+  return res
+end
+
 return utils

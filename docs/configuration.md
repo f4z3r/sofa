@@ -70,7 +70,6 @@ A command of name `<name>` has the following structure.
       prompt: Choose a network
       default: home
       exclusive: true
-      interactive: false
       choices:
       - home
       - work
