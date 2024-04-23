@@ -11,7 +11,7 @@ namespaces:
           network:
             prompt: Choose a network
             exclusive: true
-            choices_cmd: 'nmcli --colors no -g ssid d wifi list'
+            choices: 'nmcli --colors no -g ssid d wifi list'
   nix:
     commands:
       rebuild:

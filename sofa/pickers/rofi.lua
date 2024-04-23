@@ -167,8 +167,8 @@ function Rofi:pick_parameter(parameter, command)
   }
   local pick = nil
   local prompt = parameter.prompt
-  if parameter.choices_cmd then
-    pick = self:_pick_from_cmd(prompt, parameter.choices_cmd, options)
+  if parameter:is_command() then
+    pick = self:_pick_from_cmd(prompt, parameter:get_command(), options)
   else
     local choices = self:_get_choices_for_param(parameter)
     pick = self:_pick(prompt, choices, options)

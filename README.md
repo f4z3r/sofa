@@ -61,7 +61,7 @@ namespaces:
             - order
           rockspec:
             prompt: Rockspec
-            choices_cmd: fd -tf -c never '.*\.rockspec$' .
+            choices: fd -tf -c never '.*\.rockspec$' .
 ```
 </details>
 

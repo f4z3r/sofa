@@ -4,6 +4,7 @@
 
 Improvements:
 - Better handling of default values in the configuration.
+- Unify configuration to only use `choices` field in parameters, also for dynamic choices.
 
 ## Version `0.3.0`
 

@@ -22,9 +22,8 @@ local namespace = {}
 ---@class Parameter
 ---@field name string
 ---@field prompt string
----@field choices_cmd string?
 ---@field private default any?
----@field private choices any[]?
+---@field private choices any[]? | string
 ---@field exclusive boolean
 ---@field private mapping { [string]: any }?
 local Parameter = {}
@@ -50,11 +49,32 @@ end
 ---return choices set of this parameter
 ---@return string[]
 function Parameter:get_choices()
+  if self:is_command() then
+    error("cannot call get choices for parameter configured with command string", 1)
+  end
   local res = {}
-  for _, choice in ipairs(self.choices or {}) do
+  local choices = self.choices or {}
+  ---@cast choices any[]
+  for _, choice in ipairs(choices) do
     res[#res + 1] = tostring(choice)
   end
   return res
+end
+
+---returns whether the parameter was configured with a command
+---@return boolean
+function Parameter:is_command()
+  return type(self.choices) == "string"
+end
+
+---get the configured command for this parameter
+---@return string
+function Parameter:get_command()
+  if not self:is_command() then
+    error("cannot call get command for parameter configured with literal choices", 1)
+  end
+  ---@type string
+  return self.choices
 end
 
 ---return the mapped value for the provided choice
