@@ -1,5 +1,5 @@
 local package_name = "sofa"
-local package_version = "0.3.0"
+local package_version = "0.3.1"
 local rockspec_revision = "0"
 local github_account_name = "f4z3r"
 local github_repo_name = package_name
@@ -24,9 +24,10 @@ description = {
 }
 
 dependencies = {
-  "lua == 5.1",
+  "lua >= 5.1, < 5.5",
   "argparse >= 0.7",
   "lyaml >= 6.2",
+  "compat53 >= 0.13",
 }
 
 -- test_dependencies = {
@@ -40,13 +41,13 @@ dependencies = {
 build = {
   type = "builtin",
   modules = {
-    ["sofa"]              = "sofa/init.lua",
-    ["sofa.arguments"]    = "sofa/arguments.lua",
+    ["sofa"] = "sofa/init.lua",
+    ["sofa.arguments"] = "sofa/arguments.lua",
     ["sofa.pickers.rofi"] = "sofa/pickers/rofi.lua",
-    ["sofa.config"]       = "sofa/config.lua",
-    ["sofa.engine"]       = "sofa/engine.lua",
-    ["sofa.namespace"]    = "sofa/namespace.lua",
-    ["sofa.utils"]        = "sofa/utils.lua",
+    ["sofa.config"] = "sofa/config.lua",
+    ["sofa.engine"] = "sofa/engine.lua",
+    ["sofa.namespace"] = "sofa/namespace.lua",
+    ["sofa.utils"] = "sofa/utils.lua",
   },
   install = {
     bin = {

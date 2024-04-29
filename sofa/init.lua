@@ -1,3 +1,5 @@
+require("compat53")
+
 local io = require("io")
 
 local arguments = require("sofa.arguments")

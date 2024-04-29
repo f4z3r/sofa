@@ -197,6 +197,13 @@ See [`docs/configuration.md`](./docs/configuration.md).
 
 ## Development
 
+You can setup a dev environment with the needed Lua version:
+
+```bash
+# launch shell with some lua version and the dependencies installed:
+nix develop .#lua52
+```
+
 ### Testing
 
 Testing is performed with `busted`:

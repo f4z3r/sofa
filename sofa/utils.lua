@@ -21,16 +21,19 @@ end
 ---run a command return the output
 ---@param cmd string
 ---@return number exit code
----@return string stdout from the command
+---@return string? stdout from the command
 function utils.run(cmd)
   local filename = os.tmpname()
   local command = string.format("%s > %s", cmd, filename)
-  local exit = os.execute(command)
+  local success, _, code = os.execute(command)
+  if not success then
+    return code, nil
+  end
   local fh = assert(io.open(filename, "r"))
   local out = fh:read("*a")
   fh:close()
   os.remove(filename)
-  return exit, out
+  return 0, out
 end
 
 ---write a temporary file with some content
