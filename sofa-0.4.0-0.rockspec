@@ -1,5 +1,5 @@
 local package_name = "sofa"
-local package_version = "0.3.1"
+local package_version = "0.4.0"
 local rockspec_revision = "0"
 local github_account_name = "f4z3r"
 local github_repo_name = package_name
@@ -30,13 +30,13 @@ dependencies = {
   "compat53 >= 0.13",
 }
 
--- test_dependencies = {
---   "busted >= 2.0",
--- }
---
--- test = {
---   type = "busted",
--- }
+test_dependencies = {
+  "busted >= 2.0",
+}
+
+test = {
+  type = "busted",
+}
 
 build = {
   type = "builtin",
