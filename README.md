@@ -122,7 +122,7 @@ Of course, this is dependent on `rofi` being installed on your system.
 
 Install via `luarocks`:
 
-```bash
+```sh
 luarocks install sofa
 ```
 
@@ -196,7 +196,7 @@ See [`docs/configuration.md`](./docs/configuration.md).
 
 You can setup a dev environment with the needed Lua version:
 
-```bash
+```sh
 # launch shell with some lua version and the dependencies installed:
 nix develop .#lua52
 ```
@@ -205,7 +205,7 @@ nix develop .#lua52
 
 Testing is performed with `busted`:
 
-```bash
+```sh
 busted .
 ```
 
