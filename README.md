@@ -3,7 +3,6 @@
 ![GitHub License](https://img.shields.io/github/license/f4z3r/sofa?link=https%3A%2F%2Fgithub.com%2Ff4z3r%2Fsofa%2Fblob%2Fmain%2FLICENSE)
 ![GitHub Release](https://img.shields.io/github/v/release/f4z3r/sofa?logo=github&link=https%3A%2F%2Fgithub.com%2Ff4z3r%2Fsofa%2Freleases)
 ![LuaRocks](https://img.shields.io/luarocks/v/f4z3r/sofa?logo=lua&link=https%3A%2F%2Fluarocks.org%2Fmodules%2Ff4z3r%2Fsofa)
-![LuaJIT](https://img.shields.io/badge/LuaJIT-_?logo=lua&labelColor=blue&color=blue)
 
 A command execution engine powered by [`rofi`](https://github.com/davatorium/rofi).
 
@@ -23,6 +22,8 @@ A command execution engine powered by [`rofi`](https://github.com/davatorium/rof
     - [Zsh](#zsh)
     - [Fish](#fish)
   - [Configuration](#configuration)
+  - [Development](#development)
+    - [Testing](#testing)
   - [Roadmap](#roadmap)
 <!--toc:end-->
 
@@ -117,9 +118,6 @@ My personal `sofa` configuration can be found
 
 ## Installation
 
-> [!NOTE]
-> Currently sofa is only tested with LuaJIT.
-
 Of course, this is dependent on `rofi` being installed on your system.
 
 Install via `luarocks`:
@@ -182,7 +180,6 @@ bindkey '^o' _interactive_sofa_widget
 Add the following lines to your `fish` configuration:
 
 ```fish
-# Hoard bindings
 function __interactive_sofa
     set output (sofa -i)
     commandline -j $output
@@ -217,8 +214,8 @@ busted .
 This shows some items I want to support. The list is not in order of priority.
 
 - [ ] add configuration validation
-- [ ] better documentation and screenshots on the capabilities
+- [x] better documentation and screenshots on the capabilities
 - [ ] support dependent choices (i.e. when X chosen for parameter 1, then provides choice list Y
       for parameter 2)
-- [ ] add support for more Lua versions
+- [x] add support for more Lua versions
 - [ ] support executing commands in the background
