@@ -88,3 +88,7 @@ namespaces:
         - clean
 config:
   shell: zsh
+  picker: fzf
+  pickers:
+    fzf:
+      default_options: "--layout=reverse --inline-info"

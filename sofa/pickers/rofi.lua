@@ -3,6 +3,7 @@ local string = require("string")
 local table = require("table")
 
 local utils = require("sofa.utils")
+local pickers = require("sofa.pickers")
 
 local rofi = {}
 
@@ -10,8 +11,8 @@ local NUL_SEPARATOR = "\0"
 local FIELD_SEPARATOR = "\x1f"
 local COMMAND_SEPARATOR = " > "
 
----@class Rofi
-local Rofi = {}
+---@class Rofi: AbstractPicker
+local Rofi = pickers.AbstractPicker:new({})
 
 ---create a new Rofi picker based on configuration
 ---@param _config table

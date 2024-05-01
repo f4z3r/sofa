@@ -11,6 +11,13 @@ local CONFIG_ENV_VAR = "SOFA_CONFIG"
 local DEFAULT_CONFIG = {
   config = {
     shell = "bash",
+    picker = "rofi",
+    pickers = {
+      fzf = {
+        default_options = "--no-multi --cycle --ansi",
+        no_color = false,
+      },
+    },
   },
 }
 
