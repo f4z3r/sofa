@@ -1,6 +1,6 @@
 local package_name = "sofa"
 local package_version = "0.4.0"
-local rockspec_revision = "0"
+local rockspec_revision = "1"
 local github_account_name = "f4z3r"
 local github_repo_name = package_name
 
@@ -27,7 +27,7 @@ dependencies = {
   "lua >= 5.1, < 5.5",
   "argparse >= 0.7",
   "lyaml >= 6.2",
-  "compat53 >= 0.13",
+  "compat53 >= 0.12",
 }
 
 test_dependencies = {
