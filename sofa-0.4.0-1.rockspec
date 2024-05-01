@@ -28,6 +28,7 @@ dependencies = {
   "argparse >= 0.7",
   "lyaml >= 6.2",
   "compat53 >= 0.12",
+  "luatext >= 1.2",
 }
 
 test_dependencies = {
@@ -43,7 +44,9 @@ build = {
   modules = {
     ["sofa"] = "sofa/init.lua",
     ["sofa.arguments"] = "sofa/arguments.lua",
+    ["sofa.pickers"] = "sofa/pickers/init.lua",
     ["sofa.pickers.rofi"] = "sofa/pickers/rofi.lua",
+    ["sofa.pickers.fzf"] = "sofa/pickers/fzf.lua",
     ["sofa.config"] = "sofa/config.lua",
     ["sofa.engine"] = "sofa/engine.lua",
     ["sofa.namespace"] = "sofa/namespace.lua",
