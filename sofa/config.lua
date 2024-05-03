@@ -9,6 +9,8 @@ local DEFAULT_CONFIG_PATH = "~/.config/sofa/config.yaml"
 local CONFIG_ENV_VAR = "SOFA_CONFIG"
 
 local DEFAULT_CONFIG = {
+  namespaces = {
+  },
   config = {
     shell = "bash",
     picker = "rofi",
@@ -36,7 +38,10 @@ end
 
 local function read_config()
   local config_file = expand_home(get_default_env(CONFIG_ENV_VAR, DEFAULT_CONFIG_PATH))
-  local fh = assert(io.open(config_file, "r"))
+  local fh = io.open(config_file, "r")
+  if fh == nil then
+    return DEFAULT_CONFIG
+  end
   local content = fh:read("*a")
   fh:close()
   local conf = yaml.load(content)

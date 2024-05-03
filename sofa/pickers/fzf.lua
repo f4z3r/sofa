@@ -7,12 +7,6 @@ local utils = require("sofa.utils")
 
 local fzf = {}
 
--- remaining TODOs:
--- - check allow non-exclusive params with: --print-query
--- - ensure default is always the first entry
--- - deploy new version 0.5.0
--- - add documentation on how to configure fzf
-
 local COMMAND_SEPARATOR = " | "
 local ANSI_GRAY = 244
 
@@ -51,19 +45,44 @@ local function add_options(cmd, options)
   return table.concat(cmd_parts, " ")
 end
 
+---parse an fzf response string into its output value
+---@param response string
+---@return string the response
+---@return boolean whether the response was a new entry not listed in choices
+function fzf._parse_response(response)
+  local _, pick = string.match(response, "^([^\n]-)\n([^\n]+)")
+  if pick ~= nil and pick ~= "" then
+    return utils.trim_whitespace(pick), false
+  elseif string.match(response, "^\n([^\n]+)") then
+    return utils.trim_whitespace(response), false
+  end
+  return utils.trim_whitespace(response), true
+end
+
+---return a pick from fzf
+---@param prompt string
+---@param choices_cmd string
+---@param options { [string]: any }
+---@return string the response
+---@return boolean whether the response was a new entry not listed in choices
 function Fzf:_pick_from_cmd(prompt, choices_cmd, options)
   prompt = utils.escape_quotes(prompt)
   prompt = prompt .. "> "
-  local cmd =
-    string.format("%s | fzf %s --prompt='%s'", choices_cmd, self.default_options, prompt)
+  local cmd = string.format("%s | fzf --print-query %s --prompt='%s'", choices_cmd, self.default_options, prompt)
   local command = add_options(cmd, options)
   local status_code, response = utils.run(command)
-  if status_code ~= 0 then
+  if status_code > 1 then
     os.exit(1)
   end
-  return utils.trim_whitespace(response)
+  return fzf._parse_response(response or "")
 end
 
+---return a pick from fzf
+---@param prompt string
+---@param choices string[]
+---@param options { [string]: any }
+---@return string the response
+---@return boolean whether the response was a new entry not listed in choices
 function Fzf:_pick(prompt, choices, options)
   local content = table.concat(choices, "\n")
   local command = string.format('echo -ne "%s"', content)
@@ -92,7 +111,10 @@ function Fzf:pick_command(namespaces, interactive)
       choices[#choices + 1] = choice
     end
   end
-  local pick = self:_pick("Command", choices, {})
+  local pick, custom = self:_pick("Command", choices, {})
+  if custom then
+    os.exit(1)
+  end
   local namespace, command = pick:match("^(%S+)%s*" .. COMMAND_SEPARATOR .. "(.+) %(")
   if not namespace then
     namespace, command = pick:match("^(%S+)%s*" .. COMMAND_SEPARATOR .. "(.+) %[")
@@ -103,19 +125,32 @@ function Fzf:pick_command(namespaces, interactive)
   return namespaces[namespace]:get_commands(interactive)[command]
 end
 
----returns markup defined choices for a parmaters based on `choices` field
+---return a templated string for a parameter choice
+---@param choice string
+---@param sub string
+---@return string
+function Fzf:_template_param_choice(choice, sub)
+  if sub == choice then
+    return choice
+  end
+  return string.format("%s (%s)", choice, self:colorize(sub, text.Color.Green))
+end
+
+---returns markup defined choices for a parmaters based on `choices` field. The default, if any, will always be the
+---first value in the returned array
 ---@param parameter Parameter
 ---@return string[]
 function Fzf:_get_choices_for_param(parameter)
   local choices = parameter:get_choices()
+  local default = parameter:get_default()
   local markup_choices = {}
   for _, choice in ipairs(choices) do
     local substitute = parameter:get_mapped_value(choice)
-    if substitute == choice then
-      markup_choices[#markup_choices + 1] = choice
+    local templated_choice = self:_template_param_choice(choice, substitute)
+    if choice == default then
+      table.insert(markup_choices, 1, templated_choice)
     else
-      markup_choices[#markup_choices + 1] =
-        string.format("%s (%s)", choice, self:colorize(substitute, text.Color.Green))
+      markup_choices[#markup_choices + 1] = templated_choice
     end
   end
   return markup_choices
@@ -153,17 +188,28 @@ function Fzf:pick_parameter(parameter, command)
   local options = {
     header = "Command: " .. command,
   }
-  local pick = nil
+  local pick, custom = nil, false
   local prompt = parameter.prompt
   if parameter:is_command() then
-    pick = self:_pick_from_cmd(prompt, parameter:get_command(), options)
+    pick, custom = self:_pick_from_cmd(prompt, parameter:get_command(), options)
   else
     local choices = self:_get_choices_for_param(parameter)
-    pick = self:_pick(prompt, choices, options)
+    pick, custom = self:_pick(prompt, choices, options)
+  end
+  if custom and parameter.exclusive then
+    os.exit(1)
+  end
+  if custom and pick == "" then
+    pick = default
   end
   return self:_get_value_for_pick(parameter, pick)
 end
 
 fzf.Fzf = Fzf
+
+---builder
+function fzf.new(config)
+  return Fzf:new(config)
+end
 
 return fzf

@@ -5,14 +5,11 @@ local io = require("io")
 local arguments = require("sofa.arguments")
 local config = require("sofa.config")
 local engine = require("sofa.engine")
--- local rofi = require("sofa.pickers.rofi")
-local fzf = require("sofa.pickers.fzf")
 
 local function main()
-  -- TODO: ensure what happens if config is empty
   local cli_args = arguments.parse()
-  -- local picker = rofi.Rofi:new(config.config)
-  local picker = fzf.Fzf:new(config.config)
+  local mod = require("sofa.pickers."..config.config.picker)
+  local picker = mod.new(config.config)
   local interactive = cli_args.interactive or false
   local cmd = picker:pick_command(config.namespaces, interactive)
   local args = cmd:get_args()
