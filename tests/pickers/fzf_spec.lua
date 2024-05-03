@@ -1,0 +1,31 @@
+--# selene: allow(undefined_variable, incorrect_standard_library_use)
+
+context("Fzf:", function()
+  local fzf = require("sofa.pickers.fzf")
+  describe("pick from choices", function()
+    it("should return a standard selected value", function()
+      local output = "query string\nmy selection\n"
+      local choice, custom = fzf._parse_response(output)
+      assert.is_false(custom)
+      assert.is.equal("my selection", choice)
+    end)
+    it("should return a standard selected value without query strings", function()
+      local output = "\nmy selection\n"
+      local choice, custom = fzf._parse_response(output)
+      assert.is_false(custom)
+      assert.is.equal("my selection", choice)
+    end)
+    it("should return an empty string with custom if nothing is passed", function()
+      local output = "\n\n"
+      local choice, custom = fzf._parse_response(output)
+      assert.is_true(custom)
+      assert.is.equal("", choice)
+    end)
+    it("should return a custom response if no selection present", function()
+      local output = "query string\n\n"
+      local choice, custom = fzf._parse_response(output)
+      assert.is_true(custom)
+      assert.is.equal("query string", choice)
+    end)
+  end)
+end)

@@ -179,4 +179,9 @@ end
 
 rofi.Rofi = Rofi
 
+---builder
+function rofi.new(config)
+  return Rofi:new(config)
+end
+
 return rofi

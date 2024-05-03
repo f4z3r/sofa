@@ -26,13 +26,13 @@ function utils.run(cmd)
   local filename = os.tmpname()
   local command = string.format("%s > %s", cmd, filename)
   local success, _, code = os.execute(command)
-  if not success then
-    return code, nil
-  end
   local fh = assert(io.open(filename, "r"))
   local out = fh:read("*a")
   fh:close()
   os.remove(filename)
+  if not success then
+    return code, out
+  end
   return 0, out
 end
 
