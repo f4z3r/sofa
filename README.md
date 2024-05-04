@@ -126,6 +126,10 @@ Install via `luarocks`:
 luarocks install sofa
 ```
 
+If you want, you can use `sofa` with `fzf` instead of `rofi`. In that case, you will need `fzf`
+installed and should have a look at the [configuration
+section](./docs/configuration.md#other-configuration) to set `fzf` as the picker.
+
 ## Integration
 
 This section shows how to integrate `sofa` with your favourite shell. The following examples

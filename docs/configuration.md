@@ -140,9 +140,20 @@ This block allows you to configure general settings.
 
 ```yaml
 config:
-  shell: zsh
+  shell: bash
+  picker: rofi
+  pickers:
+    fzf:
+      default_options: "--no-multi --cycle --ansi"
+      no_color: false
 ```
 
 **Optional:**
 - `shell`: configure with what shell the command should be executed with when not running in
   interactive mode. Can be `bash`, `zsh`, `fish`. Defaults to `bash`.
+- `picker`: which picker to use. Can be either `rofi` or `fzf`. Defaults to `rofi`.
+- `pickers`: configuration for individual pickers.
+- `pickers.fzf`: configuration for the `fzf` picker.
+- `pickers.fzf.default_options`: the default options to pass to `fzf`. Defaults to `--no-multi
+  --cycle --ansi`. Note that not passing options such as `--ansi` might break when using colors.
+- `pickers.fzf.no_color`: disable additional color usage in `fzf`. Defaults to `false`.
