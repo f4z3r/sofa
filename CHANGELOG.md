@@ -5,6 +5,11 @@
 ### Added
 
 - Support for `fzf` as a picker.
+- Logging support.
+
+### Fixed
+
+- `sofa` can now be launched without a configuration.
 
 ## [0.4.0] - 2024-04-30
 

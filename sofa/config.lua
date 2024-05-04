@@ -9,9 +9,8 @@ local DEFAULT_CONFIG_PATH = "~/.config/sofa/config.yaml"
 local CONFIG_ENV_VAR = "SOFA_CONFIG"
 
 local DEFAULT_CONFIG = {
-  namespaces = {
-  },
   config = {
+    log = "~/.local/state/sofa/sofa.log",
     shell = "bash",
     picker = "rofi",
     pickers = {
@@ -30,16 +29,12 @@ local function get_default_env(name, default)
   return val
 end
 
-local function expand_home(path)
-  local home = assert(os.getenv("HOME"))
-  return path:gsub("~", home)
-end
-
 local function read_config()
-  local config_file = expand_home(get_default_env(CONFIG_ENV_VAR, DEFAULT_CONFIG_PATH))
+  local config_file = utils.expand_home(get_default_env(CONFIG_ENV_VAR, DEFAULT_CONFIG_PATH))
   local fh = io.open(config_file, "r")
   if fh == nil then
-    return DEFAULT_CONFIG
+    io.stderr:write("configuation not found")
+    os.exit(1)
   end
   local content = fh:read("*a")
   fh:close()

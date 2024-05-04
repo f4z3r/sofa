@@ -1,8 +1,5 @@
 # Configuration
 
-> [!WARNING]
-> A configuration must be set, currently `sofa` cannot handle not having a configuration.
-
 ---
 
 **Table of Contents:**
@@ -140,15 +137,16 @@ This block allows you to configure general settings.
 
 ```yaml
 config:
+  log: ~/.local/state/sofa/sofa.log
   shell: bash
   picker: rofi
   pickers:
     fzf:
       default_options: "--no-multi --cycle --ansi"
-      no_color: false
 ```
 
 **Optional:**
+- `log`: the log file to use. Defaults to `~/.local/state/sofa/sofa.log`.
 - `shell`: configure with what shell the command should be executed with when not running in
   interactive mode. Can be `bash`, `zsh`, `fish`. Defaults to `bash`.
 - `picker`: which picker to use. Can be either `rofi` or `fzf`. Defaults to `rofi`.

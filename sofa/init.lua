@@ -5,10 +5,12 @@ local io = require("io")
 local arguments = require("sofa.arguments")
 local config = require("sofa.config")
 local engine = require("sofa.engine")
+local log = require("sofa.log")
 
 local function main()
+  log:set_file(config.config.log)
   local cli_args = arguments.parse()
-  local mod = require("sofa.pickers."..config.config.picker)
+  local mod = require("sofa.pickers." .. config.config.picker)
   local picker = mod.new(config.config)
   local interactive = cli_args.interactive or false
   local cmd = picker:pick_command(config.namespaces, interactive)

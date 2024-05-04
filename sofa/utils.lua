@@ -4,6 +4,15 @@ local string = require("string")
 
 local utils = {}
 
+---expand the home tilde in a path
+---@param path string
+---@return string
+function utils.expand_home(path)
+  local home = assert(os.getenv("HOME"))
+  local res, _ = path:gsub("^~", home, 1)
+  return res
+end
+
 ---trim leading and trailing whitespace from a string
 ---@param s string
 ---@return string

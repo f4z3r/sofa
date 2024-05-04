@@ -2,6 +2,7 @@ local os = require("os")
 
 local text = require("luatext")
 
+local log = require("sofa.log")
 local pickers = require("sofa.pickers")
 local utils = require("sofa.utils")
 
@@ -69,6 +70,7 @@ function Fzf:_pick_from_cmd(prompt, choices_cmd, options)
   local command = add_options(cmd, options)
   local status_code, response = utils.run(command)
   if status_code > 1 then
+    log:log("fzf: abort triggered")
     os.exit(1)
   end
   return fzf._parse_response(response or "")
@@ -108,8 +110,13 @@ function Fzf:pick_command(namespaces, interactive)
       choices[#choices + 1] = choice
     end
   end
+  if #choices == 0 then
+    log:log("fzf: no commands configured")
+    os.exit(1)
+  end
   local pick, custom = self:_pick("Command", choices, {})
   if custom then
+    log:log("fzf: must choose one of the configured commands")
     os.exit(1)
   end
   local namespace, command = pick:match("^(%S+)%s*" .. COMMAND_SEPARATOR .. "(.+) %(")
@@ -194,6 +201,7 @@ function Fzf:pick_parameter(parameter, command)
     pick, custom = self:_pick(prompt, choices, options)
   end
   if custom and parameter.exclusive then
+    log:log("fzf: cannot provide custom value on exclusive parameter")
     os.exit(1)
   end
   if custom and pick == "" then
