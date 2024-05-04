@@ -1,57 +1,71 @@
 # Changelog
 
-## Version 0.4.0
+## [0.5.0] - 2024-05-04
 
-Features:
+### Added
+
+- Support for `fzf` as a picker.
+
+## [0.4.0] - 2024-04-30
+
+### Added
 
 - Support for Lua version 5.2, 5.3, and 5.4.
 
-Improvements:
+### Changed
 
 - Better handling of default values in the configuration.
 - Unify configuration to only use `choices` field in parameters, also for dynamic choices.
 
-## Version `0.3.0`
+## [0.3.0] - 2024-04-18
 
-Features:
+### Added
 
 - Support setting the execution shell when executing command in non-interactive mode.
 - Support using a command for the choices rather than only a list.
 
-Improvements:
+### Changed
 
 - Also provide non-interactive commands when launched with `-i`.
 - Show default in the command substitution if set.
 - Allow to cleanly exit by aborting rofi.
 - Fully stop logging.
 
-Fixes:
+### Fixed
 
 - Correctly implement exclusive choices selection.
 - Return non-zero exit code on aborts.
 
-## Version `0.2.2`
+## [0.2.2] - 2024-04-12
 
-Fixes:
+### Fixed
 
 - Correctly pick default value on parameter if none is passed.
 
-## Version `0.2.1`
+## [0.2.1] - 2024-04-12
 
-Fixes:
+### Fixed
 
 - Do not panic if no commands are found.
 
-## Version `0.2.0`
+## [0.2.0] - 2024-04-12
 
-Features:
+### Added
 
 - Support for an interactive mode with `-i` flag to enable embedding into shells.
 
-Improvements:
+### Changed
 
 - Prints mapped values (if any) in the parameter search terms.
 
-## Version `0.1.0`
+## [0.1.0] - 2024-04-12
 
 Initial release.
+
+[0.5.0]: https://github.com/f4z3r/sofa/compare/v0.4.0...v0.5.0
+[0.4.0]: https://github.com/f4z3r/sofa/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/f4z3r/sofa/compare/v0.2.2...v0.3.0
+[0.2.2]: https://github.com/f4z3r/sofa/compare/v0.2.1...v0.2.2
+[0.2.1]: https://github.com/f4z3r/sofa/compare/v0.2.0...v0.2.1
+[0.2.0]: https://github.com/f4z3r/sofa/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/f4z3r/sofa/releases/tag/v0.1.0
