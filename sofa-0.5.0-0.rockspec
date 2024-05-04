@@ -51,6 +51,7 @@ build = {
     ["sofa.engine"] = "sofa/engine.lua",
     ["sofa.namespace"] = "sofa/namespace.lua",
     ["sofa.utils"] = "sofa/utils.lua",
+    ["sofa.log"] = "sofa/log.lua",
   },
   install = {
     bin = {

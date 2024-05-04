@@ -1,5 +1,7 @@
 --# selene: allow(undefined_variable, incorrect_standard_library_use)
 
+local os = require("os")
+
 context("Utils:", function()
   local utils = require("sofa.utils")
   describe("apply_defaults", function()
@@ -37,6 +39,22 @@ context("Utils:", function()
         },
       }
       assert.are.same(expected, res.other)
+    end)
+  end)
+
+  describe("expand_home", function()
+    it("should not modify a path without home", function()
+      local path = "/home/f4z3r/Documents/"
+      assert.are.equal(path, utils.expand_home(path))
+    end)
+    it("should replace the home diretory of a user", function()
+      local path = "~/Documents/"
+      local home = os.getenv("HOME")
+      assert.are.same(home .. "/Documents/", utils.expand_home(path))
+    end)
+    it("should not replace tildes elsewhere in the path", function()
+      local path = "/home/f4z3r/test/~/Documents/"
+      assert.are.equal(path, utils.expand_home(path))
     end)
   end)
 end)

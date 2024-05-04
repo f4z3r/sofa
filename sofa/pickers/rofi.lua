@@ -2,8 +2,9 @@ local os = require("os")
 local string = require("string")
 local table = require("table")
 
-local utils = require("sofa.utils")
+local log = require("sofa.log")
 local pickers = require("sofa.pickers")
+local utils = require("sofa.utils")
 
 local rofi = {}
 
@@ -52,6 +53,7 @@ function Rofi:_pick_from_cmd(prompt, choices_cmd, options)
   local command = add_options(cmd, options)
   local status_code, response = utils.run(command)
   if status_code ~= 0 then
+    log:log("rofi: abort triggered")
     os.exit(1)
   end
   return utils.trim_whitespace(response)
@@ -66,6 +68,7 @@ function Rofi:_pick(prompt, choices, options)
   local status_code, response = utils.run(command)
   delete()
   if status_code ~= 0 then
+    log:log("rofi: abort triggered")
     os.exit(1)
   end
   return utils.trim_whitespace(response)
@@ -104,6 +107,7 @@ function Rofi:pick_command(namespaces, interactive)
     end
   end
   if #choices == 0 then
+    log:log("rofi: no commands configured")
     os.exit(1)
   end
   local pick = self:_pick("Command", choices, { no_custom = true, case_insensitive = true, markup = true })
