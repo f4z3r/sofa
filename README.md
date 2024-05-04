@@ -118,6 +118,9 @@ My personal `sofa` configuration can be found
 
 ## Installation
 
+> [!NOTE]
+> `sofa` will only work on Linux systems. It might work on MacOS, but I have not tested it.
+
 Of course, this is dependent on `rofi` being installed on your system.
 
 Install via `luarocks`:
@@ -126,8 +129,8 @@ Install via `luarocks`:
 luarocks install sofa
 ```
 
-If you want, you can use `sofa` with `fzf` instead of `rofi`. In that case, you will need `fzf`
-installed and should have a look at the [configuration
+If you want, you can use `sofa` with [`fzf`](https://github.com/junegunn/fzf) instead of `rofi`. In
+that case, you will need `fzf` installed and should have a look at the [configuration
 section](./docs/configuration.md#other-configuration) to set `fzf` as the picker.
 
 ## Integration
