@@ -156,4 +156,8 @@ config:
 - `pickers.fzf`: configuration for the `fzf` picker.
 - `pickers.fzf.default_options`: the default options to pass to `fzf`. Defaults to `--no-multi
   --cycle --ansi`. Note that not passing options such as `--ansi` might break when using colors.
-- `pickers.fzf.no_color`: disable additional color usage in `fzf`. Defaults to `false`.
+
+> [!NOTE]
+> `sofa` respects [`NO_COLOR`](https://no-color.org/) and will not add additional colors to its
+> output if the environment variable is set. `sofa` will however not modify existing `fzf`
+> configuration, so `fzf` might still print colored output to the terminal.

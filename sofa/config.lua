@@ -17,7 +17,6 @@ local DEFAULT_CONFIG = {
     pickers = {
       fzf = {
         default_options = "--no-multi --cycle --ansi",
-        no_color = false,
       },
     },
   },
