@@ -1,6 +1,6 @@
 local package_name = "sofa"
-local package_version = "0.4.0"
-local rockspec_revision = "1"
+local package_version = "0.5.0"
+local rockspec_revision = "0"
 local github_account_name = "f4z3r"
 local github_repo_name = package_name
 
