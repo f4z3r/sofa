@@ -62,6 +62,7 @@
             ++ (custom-lua-packages luaPackage);
           shellHook = ''
             export LUA_PATH="./?.lua;./?/init.lua;$LUA_PATH"
+            $SHELL && exit
           '';
         };
     in {
