@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Improved help information on `--help` with information on how to configure `sofa`.
+
+### Fixed
+
+- Typo in missing configuration message, and configuration location printing.
+
 ## [0.5.0] - 2024-05-04
 
 ### Added
@@ -67,6 +77,7 @@
 
 Initial release.
 
+[unreleased]: https://github.com/f4z3r/sofa/compare/v0.5.0...main
 [0.5.0]: https://github.com/f4z3r/sofa/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/f4z3r/sofa/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/f4z3r/sofa/compare/v0.2.2...v0.3.0

@@ -1,4 +1,5 @@
 local io = require("io")
+local string = require("string")
 
 local yaml = require("lyaml")
 
@@ -33,7 +34,7 @@ local function read_config()
   local config_file = utils.expand_home(get_default_env(CONFIG_ENV_VAR, DEFAULT_CONFIG_PATH))
   local fh = io.open(config_file, "r")
   if fh == nil then
-    io.stderr:write("configuation not found")
+    io.stderr:write(string.format("'%s': configuration not found", config_file))
     os.exit(1)
   end
   local content = fh:read("*a")
