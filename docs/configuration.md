@@ -112,7 +112,13 @@ A parameter of name `<name>` has the following structure.
   prompt: Choose a network
   default: home
   exclusive: true
-  choices: 'nmcli --colors no -g ssid d wifi list'
+  choices: "nmcli --colors no -g ssid d wifi list"
+# or
+<name>:
+  prompt: Session
+  exclusive: true
+  choices: "tmux list-sessions -F '#S: #{session_path} <span size='small'><i>(#{session_attached} attached, #{session_windows} windows)</i></span>'"
+  mapping: "cut -d: -f1"
 ```
 
 **Optional:**
@@ -129,7 +135,8 @@ A parameter of name `<name>` has the following structure.
 - `mapping`: a mapping which allows to turn a chosen option into another value before applying it to
   the command. In this case, if `other` is manually provided (allowed  even though `other` is not
   in `choices` since `exclusive: false`), the string `some-other-wifi` will get injected into the
-  command.
+  command. Alternatively, a command can be given instead of a map. In that case the command will be
+  executed with the chosen key provided to stdin.
 
 ## Other Configuration
 

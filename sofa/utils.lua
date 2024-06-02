@@ -39,7 +39,7 @@ function utils.run(cmd)
   local out = fh:read("*a")
   fh:close()
   os.remove(filename)
-  if not success then
+  if not success and code ~= nil then
     return code, out
   end
   return 0, out

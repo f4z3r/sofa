@@ -1,6 +1,10 @@
 # Changelog
 
-<!-- ## [Unreleased] -->
+## [Unreleased]
+
+### Added
+
+- Added possibility to perform mapping as a command instead of just a map.
 
 ## [0.5.1] - 2024-05-16
 

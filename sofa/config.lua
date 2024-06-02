@@ -1,3 +1,5 @@
+-- NOTE: config.lua should not use log.lua as the logger is initialized only after loading the config
+
 local io = require("io")
 local string = require("string")
 

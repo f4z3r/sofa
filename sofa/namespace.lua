@@ -1,5 +1,7 @@
+local os = require("os")
 local string = require("string")
 
+local log = require("sofa.log")
 local utils = require("sofa.utils")
 
 local DEFAULT_NAMESPACE = {
@@ -25,7 +27,7 @@ local namespace = {}
 ---@field private default any?
 ---@field private choices any[]? | string
 ---@field exclusive boolean
----@field private mapping { [string]: any }?
+---@field private mapping { [string]: any }? | string
 local Parameter = {}
 
 ---@param name string
@@ -81,6 +83,15 @@ end
 ---@param key string
 ---@return string
 function Parameter:get_mapped_value(key)
+  if type(self.mapping) == "string" then
+    local cmd = string.format('echo -ne "%s" | %s', key, utils.escape_quotes(self.mapping))
+    local code, out = utils.run(cmd)
+    if code ~= 0 or out == nil then
+      log:log(string.format("mapping: failed to run command '%s'", cmd))
+      os.exit(code)
+    end
+    return out
+  end
   local mapping = self.mapping or {}
   return mapping[key] or key
 end
