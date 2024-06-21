@@ -193,6 +193,8 @@ function __interactive_sofa
 end
 
 bind \co __interactive_sofa
+# if you use vim mode and want to bind in insert mode
+bind -M insert \co __interactive_sofa
 ```
 
 ## Configuration
