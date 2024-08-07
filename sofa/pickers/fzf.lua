@@ -173,11 +173,12 @@ function Fzf:_get_value_for_pick(parameter, pick)
   return parameter:get_mapped_value(choice)
 end
 
----returns the value of a parameter
+---returns the value of a parameter, is passed a list of previous parameter values if dependent on them
 ---@param parameter Parameter
 ---@param command string
+---@param params { [string]: string }
 ---@return string
-function Fzf:pick_parameter(parameter, command)
+function Fzf:pick_parameter(parameter, command, params)
   local sub = string.format("{{ %s }}", parameter.name)
   local default = parameter:get_default()
   if default then
@@ -195,7 +196,7 @@ function Fzf:pick_parameter(parameter, command)
   local pick, custom = nil, false
   local prompt = parameter.prompt
   if parameter:is_command() then
-    pick, custom = self:_pick_from_cmd(prompt, parameter:get_command(), options)
+    pick, custom = self:_pick_from_cmd(prompt, parameter:get_command(params), options)
   else
     local choices = self:_get_choices_for_param(parameter)
     pick, custom = self:_pick(prompt, choices, options)

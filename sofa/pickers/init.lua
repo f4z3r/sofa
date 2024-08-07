@@ -21,11 +21,12 @@ function AbstractPicker:pick_command(namespaces, interactive)
   error("not implemented", 1)
 end
 
----returns the value of a parameter
+---returns the value of a parameter, is passed a list of previous parameter values if dependent on them
 ---@param parameter Parameter
 ---@param command string
+---@param params { [string]: string }
 ---@return string
-function AbstractPicker:pick_parameter(parameter, command)
+function AbstractPicker:pick_parameter(parameter, command, params)
   error("not implemented", 1)
 end
 

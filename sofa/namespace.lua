@@ -70,13 +70,19 @@ function Parameter:is_command()
 end
 
 ---get the configured command for this parameter
+---@param params { [string]: string }
 ---@return string
-function Parameter:get_command()
+function Parameter:get_command(params)
   if not self:is_command() then
     error("cannot call get command for parameter configured with literal choices", 1)
   end
   ---@type string
-  return self.choices
+  local res = self.choices
+  for param, value in pairs(params) do
+    local pattern = string.format("{{%%s*%s%%s*}}", param)
+    res = res:gsub(pattern, value)
+  end
+  return res
 end
 
 ---return the mapped value for the provided choice

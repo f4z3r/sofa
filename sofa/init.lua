@@ -19,7 +19,7 @@ local function main()
   for _, argument in ipairs(args) do
     local parameter = cmd:get_param(argument)
     local command = cmd:substitute(params)
-    params[argument] = picker:pick_parameter(parameter, command)
+    params[argument] = picker:pick_parameter(parameter, command, params)
   end
 
   local command = cmd:substitute(params)
