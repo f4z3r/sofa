@@ -1,6 +1,10 @@
 # Changelog
 
-<!-- ## [Unreleased] -->
+## [Unreleased]
+
+### Added
+
+- Allow argument commands to use previous argument choices.
 
 ## [0.5.2] - 2024-06-03
 
