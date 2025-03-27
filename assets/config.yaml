@@ -6,7 +6,7 @@ namespaces:
         description: Connect to a favourite wifi network.
         interactive: false
         tags:
-        - netowrk
+          - netowrk
         parameters:
           network:
             prompt: Choose a network
@@ -19,15 +19,15 @@ namespaces:
         description: Rebuild nix setup
         interactive: true
         tags:
-        - sudo
+          - sudo
         parameters:
           type:
             default: switch
             prompt: How to rebuild
             exclusive: true
             choices:
-            - switch
-            - reboot
+              - switch
+              - reboot
       clean-generations:
         command: nix-collect-garbage --delete-older-than {{ days }}d
         description: Delete old nix generations
@@ -42,7 +42,7 @@ namespaces:
         command: xdg-open "https://github.com/{{ user }}/{{ project }}"
         description: Open a GitHub project
         tags:
-        - browser
+          - browser
         parameters:
           user:
             default: f4z3r
@@ -53,14 +53,14 @@ namespaces:
         command: xdg-open "https://search.nixos.org/packages?channel={{ channel }}"
         description: Open NixOS packages and versions
         tags:
-        - browser
+          - browser
         parameters:
           channel:
             default: unstable
             prompt: Choose channel
             choices:
-            - unstable
-            - "23.11"
+              - unstable
+              - "23.11"
   git:
     commands:
       prune-branckes:
@@ -92,18 +92,18 @@ namespaces:
         description: Delete all exited containers
         interactive: true
         tags:
-        - local
-        - clean
+          - local
+          - clean
       prune-images:
         command: docker images | tail -n+2 | perl -lane 'print @F[2] if @F[1] =~ /<none>/' | xargs -r docker rmi
         description: Delete all container images missing a tag
         interactive: true
         tags:
-        - local
-        - clean
+          - local
+          - clean
 config:
-  shell: zsh
-  picker: fzf
+  shell: fish
+  picker: rofi
   pickers:
     fzf:
-      default_options: "--layout=reverse --inline-info"
+      default_options: "--layout=reverse --inline-info --ansi"
