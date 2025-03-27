@@ -47,9 +47,13 @@ local function add_options(cmd, options)
   return table.concat(cmd_parts, " ")
 end
 
-function Rofi:_pick_from_cmd(prompt, choices_cmd, options)
+function Rofi:_pick_from_cmd(prompt, choices_cmd, options, params)
   prompt = utils.escape_quotes(prompt)
-  local cmd = string.format("%s | rofi -dmenu -p '%s'", choices_cmd, prompt)
+  local env_prefix = utils.build_env_string_from_params(params)
+  if env_prefix ~= "" then
+    env_prefix = string.format("export %s && ", env_prefix)
+  end
+  local cmd = string.format("%s%s | rofi -dmenu -p '%s'", env_prefix, choices_cmd, prompt)
   local command = add_options(cmd, options)
   local status_code, response = utils.run(command)
   if status_code ~= 0 then
@@ -174,7 +178,7 @@ function Rofi:pick_parameter(parameter, command, params)
   local pick = nil
   local prompt = parameter.prompt
   if parameter:is_command() then
-    pick = self:_pick_from_cmd(prompt, parameter:get_command(params), options)
+    pick = self:_pick_from_cmd(prompt, parameter:get_command(params), options, params)
   else
     local choices = self:_get_choices_for_param(parameter)
     pick = self:_pick(prompt, choices, options)

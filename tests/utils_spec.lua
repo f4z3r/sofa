@@ -57,4 +57,32 @@ context("Utils:", function()
       assert.are.equal(path, utils.expand_home(path))
     end)
   end)
+
+  describe("build_env_string_from_params", function()
+    it("should replace - with _ in the keys", function()
+      local params = {
+        ["this-is-a-key"] = "test",
+      }
+      local env = utils.build_env_string_from_params(params)
+      assert.does.match("THIS_IS_A_KEY=", env, nil, true)
+    end)
+
+    it("wrap values in quotes to ensure correct handling", function()
+      local params = {
+        ["key"] = "value",
+      }
+      local env = utils.build_env_string_from_params(params)
+      assert.does.match("^KEY='value'$", env)
+    end)
+
+    it("uses all values provided", function()
+      local params = {
+        ["key"] = "value",
+        ["other"] = "test",
+      }
+      local env = utils.build_env_string_from_params(params)
+      assert.does.match("KEY='value'", env)
+      assert.does.match("OTHER='test'", env)
+    end)
+  end)
 end)

@@ -27,6 +27,19 @@ function utils.escape_quotes(s)
   return s:gsub("'", "'\\''")
 end
 
+---build an environment string from a table of env variables
+---@param env { [string]: string }
+---@return string
+function utils.build_env_string_from_params(env)
+  local vars = {}
+  for k, v in pairs(env) do
+    local key = string.gsub(k, "-", "_")
+    key = string.upper(key)
+    vars[#vars + 1] = string.format("%s='%s'", key, v)
+  end
+  return table.concat(vars, " ")
+end
+
 ---run a command return the output
 ---@param cmd string
 ---@return number exit code

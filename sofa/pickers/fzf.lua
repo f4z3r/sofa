@@ -61,12 +61,18 @@ end
 ---@param prompt string
 ---@param choices_cmd string
 ---@param options { [string]: any }
+---@param params { [string]: string }
 ---@return string the response
 ---@return boolean whether the response was a new entry not listed in choices
-function Fzf:_pick_from_cmd(prompt, choices_cmd, options)
+function Fzf:_pick_from_cmd(prompt, choices_cmd, options, params)
   prompt = utils.escape_quotes(prompt)
   prompt = prompt .. "> "
-  local cmd = string.format("%s | fzf --print-query %s --prompt='%s'", choices_cmd, self.default_options, prompt)
+  local env_prefix = utils.build_env_string_from_params(params)
+  if env_prefix ~= "" then
+    env_prefix = string.format("export %s && ", env_prefix)
+  end
+  local cmd =
+    string.format("%s%s | fzf --print-query %s --prompt='%s'", env_prefix, choices_cmd, self.default_options, prompt)
   local command = add_options(cmd, options)
   local status_code, response = utils.run(command)
   if status_code > 1 then
@@ -82,10 +88,10 @@ end
 ---@param options { [string]: any }
 ---@return string the response
 ---@return boolean whether the response was a new entry not listed in choices
-function Fzf:_pick(prompt, choices, options)
+function Fzf:_pick(prompt, choices, options, params)
   local content = table.concat(choices, "\n")
   local command = string.format('echo -ne "%s"', content)
-  return self:_pick_from_cmd(prompt, command, options)
+  return self:_pick_from_cmd(prompt, command, options, params)
 end
 
 ---return the command that the user picked
@@ -114,7 +120,7 @@ function Fzf:pick_command(namespaces, interactive)
     log:log("fzf: no commands configured")
     os.exit(1)
   end
-  local pick, custom = self:_pick("Command", choices, {})
+  local pick, custom = self:_pick("Command", choices, {}, {})
   if custom then
     log:log("fzf: must choose one of the configured commands")
     os.exit(1)
@@ -196,10 +202,10 @@ function Fzf:pick_parameter(parameter, command, params)
   local pick, custom = nil, false
   local prompt = parameter.prompt
   if parameter:is_command() then
-    pick, custom = self:_pick_from_cmd(prompt, parameter:get_command(params), options)
+    pick, custom = self:_pick_from_cmd(prompt, parameter:get_command(params), options, params)
   else
     local choices = self:_get_choices_for_param(parameter)
-    pick, custom = self:_pick(prompt, choices, options)
+    pick, custom = self:_pick(prompt, choices, options, params)
   end
   if custom and parameter.exclusive then
     log:log("fzf: cannot provide custom value on exclusive parameter")

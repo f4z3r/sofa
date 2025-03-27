@@ -224,7 +224,7 @@ This shows some items I want to support. The list is not in order of priority.
 
 - [ ] add configuration validation
 - [x] better documentation and screenshots on the capabilities
-- [ ] support dependent choices (i.e. when X chosen for parameter 1, then provides choice list Y
+- [x] support dependent choices (i.e. when X chosen for parameter 1, then provides choice list Y
       for parameter 2)
 - [x] add support for more Lua versions
 - [ ] support executing commands in the background

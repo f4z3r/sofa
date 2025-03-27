@@ -68,8 +68,23 @@ namespaces:
         description: Removes all local branches that no longer track an upstream. Run after pruning the remote.
         interactive: true
         tags:
-        - local
-        - clean
+          - local
+          - clean
+  dependent:
+    commands:
+      dependent-choices:
+        command: echo -n "Separator is {{ sep }} and chosen values is {{ value }}"
+        description: Test
+        interactive: true
+        parameters:
+          sep:
+            prompt: Choose Separator
+            choices:
+              - ":"
+              - "|"
+          value:
+            prompt: Choose value
+            choices: echo -n 'this:that|other|yes:no' | tr "$SEP" "\n"
   docker:
     commands:
       prune-containers:
