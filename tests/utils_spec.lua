@@ -84,5 +84,15 @@ context("Utils:", function()
       assert.does.match("KEY='value'", env)
       assert.does.match("OTHER='test'", env)
     end)
+
+    it("should escape single quotes in values", function()
+      local params = {
+        ["key"] = "value with 'quotes'",
+        ["key2"] = 'value with "quotes"',
+      }
+      local env = utils.build_env_string_from_params(params)
+      assert.does.match("KEY='value with '\\''quotes'\\'''", env)
+      assert.does.match("KEY2='value with \"quotes\"", env)
+    end)
   end)
 end)

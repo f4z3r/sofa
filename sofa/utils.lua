@@ -35,7 +35,8 @@ function utils.build_env_string_from_params(env)
   for k, v in pairs(env) do
     local key = string.gsub(k, "-", "_")
     key = string.upper(key)
-    vars[#vars + 1] = string.format("%s='%s'", key, v)
+    local escaped_value = string.gsub(v, "'", "'\\''")
+    vars[#vars + 1] = string.format("%s='%s'", key, escaped_value)
   end
   return table.concat(vars, " ")
 end
