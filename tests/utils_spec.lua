@@ -92,7 +92,7 @@ context("Utils:", function()
       }
       local env = utils.build_env_string_from_params(params)
       assert.does.match("KEY='value with '\\''quotes'\\'''", env)
-      assert.does.match("KEY2='value with \"quotes\"", env)
+      assert.does.match("KEY2='value with \"quotes\"'", env)
     end)
   end)
 end)
