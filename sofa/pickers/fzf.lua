@@ -63,7 +63,12 @@ end
 ---@param options { [string]: any }
 ---@param params { [string]: string }
 ---@return string the response
----@return boolean whether the response was a new entry not listed in choices
+---Executes an fzf command with a custom prompt, additional options, and environment variables, then parses the selection to determine if it represents a new entry.
+---@param prompt string The prompt message to display (quotes are escaped and a ">" is appended).
+---@param choices_cmd string The shell command that outputs the list of selectable choices.
+---@param options string Additional options to modify the fzf command.
+---@param params table Key-value pairs specifying environment variable settings for the command.
+---@return boolean True if the response indicates a new entry not listed in the choices, false otherwise.
 function Fzf:_pick_from_cmd(prompt, choices_cmd, options, params)
   prompt = utils.escape_quotes(prompt)
   prompt = prompt .. "> "
@@ -87,7 +92,14 @@ end
 ---@param choices string[]
 ---@param options { [string]: any }
 ---@return string the response
----@return boolean whether the response was a new entry not listed in choices
+---Concatenates a list of choices into a newline-separated string and delegates selection to `_pick_from_cmd`.
+---The function builds a command that outputs the choices and passes it along with the provided prompt, options, and additional parameters.
+---
+---@param prompt string The message prompt to display.
+---@param choices table List of strings representing each selectable option.
+---@param options table Table of options for configuring the picker.
+---@param params table Optional key-value pairs used to build environment variables for command execution.
+---@return boolean True if the response indicates a new entry not present in the provided choices.
 function Fzf:_pick(prompt, choices, options, params)
   local content = table.concat(choices, "\n")
   local command = string.format('echo -ne "%s"', content)
@@ -97,7 +109,12 @@ end
 ---return the command that the user picked
 ---@param namespaces { [string]: Namespace }
 ---@param interactive boolean
----@return Command
+---Presents a formatted list of commands from given namespaces and lets the user select one via Fzf.
+---Iterates through each namespace to build display strings incorporating the namespace, command name, optional description, and tags.
+---Exits the program if no commands are configured or if an invalid custom command is chosen.
+---@param namespaces table Mapping of namespace names to namespace objects that provide command lists.
+---@param interactive boolean Flag to determine whether to fetch commands in interactive mode.
+---@return Command The command object corresponding to the user's selection.
 function Fzf:pick_command(namespaces, interactive)
   local sep = colorize(COMMAND_SEPARATOR, text.Color.Magenta)
   local choices = {}
@@ -183,7 +200,15 @@ end
 ---@param parameter Parameter
 ---@param command string
 ---@param params { [string]: string }
----@return string
+---Prompts the user to select a value for a given parameter by substituting a placeholder in a command template and interfacing with Fzf.
+---
+---Replaces the parameter token in the provided command with either its default or a formatted representation, then displays the updated command as a header
+---to prompt the user. If the parameter specifies a command for option retrieval, options are fetched dynamically; otherwise, predefined choices are used.
+---If a custom value is provided for an exclusive parameter, an error is logged and the program is terminated.
+---@param parameter table A parameter definition that includes properties such as name, default value, prompt, and exclusivity.
+---@param command string A command template containing a placeholder for the parameter's value.
+---@param params table A table of key-value pairs used for dynamic substitutions and environment configuration.
+---@return string The selected or default value for the parameter.
 function Fzf:pick_parameter(parameter, command, params)
   local sub = string.format("{{ %s }}", parameter.name)
   local default = parameter:get_default()

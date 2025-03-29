@@ -25,6 +25,15 @@ function Rofi:new(_config)
   return o
 end
 
+---Builds a command string by appending additional option flags to an initial command.
+---@param cmd string The base command string.
+---@param options table A table specifying additional options. Recognized keys:
+---  - **mesg** (string): A message to display, appended as `-mesg '<escaped_mesg>'`.
+---  - **case_insensitive** (boolean): If true, appends the `-i` flag.
+---  - **no_custom** (boolean): If true, appends the `-no-custom` flag.
+---  - **markup** (boolean): If true, appends the `-markup-rows` flag.
+---  - **default** (string): A default selection, appended as `-select '<escaped_default>'`.
+---@return string The command string concatenated with the specified option flags.
 local function add_options(cmd, options)
   local cmd_parts = { cmd }
   if options.mesg then
@@ -47,6 +56,7 @@ local function add_options(cmd, options)
   return table.concat(cmd_parts, " ")
 end
 
+---@return string The trimmed output from the executed command.
 function Rofi:_pick_from_cmd(prompt, choices_cmd, options, params)
   prompt = utils.escape_quotes(prompt)
   local env_prefix = utils.build_env_string_from_params(params)
@@ -157,7 +167,13 @@ end
 ---@param parameter Parameter
 ---@param command string
 ---@param params { [string]: string }
----@return string
+--- Prompts the user to select a value for a parameter using Rofi.  
+--- It replaces the parameter placeholder in the given command with a highlighted default value (or the parameter's name if no default exists) and displays the modified command as a prompt.  
+--- For command-based parameters, it executes the associated command (using optional extra parameters) to capture the selection; for others, it presents a list of choices.  
+---@param parameter table A parameter configuration object containing the name, prompt, default value, and methods to determine if it is command-based and to retrieve its command or choices.  
+---@param command string A command template that includes a placeholder for the parameter, which will be replaced with a highlighted value.  
+---@param params table Additional context (such as environment variables) used when fetching and executing the parameter's command.  
+---@return string The final value selected for the parameter.
 function Rofi:pick_parameter(parameter, command, params)
   local sub = string.format("{{ %s }}", parameter.name)
   local default = parameter:get_default()

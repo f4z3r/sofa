@@ -22,14 +22,19 @@ end
 
 ---escape single quotes in strings
 ---@param s any
----@return unknown
+---Escapes all single quotes in the given string by replacing each with an escaped version suitable for shell command embedding.
+---@param s string The input string where single quotes will be escaped.
+---@return string The resulting string with escaped single quotes.
 function utils.escape_quotes(s)
   return s:gsub("'", "'\\''")
 end
 
 ---build an environment string from a table of env variables
 ---@param env { [string]: string }
----@return string
+---Builds a shell environment variable string from a table of key-value pairs.  
+---Each key is transformed by replacing hyphens with underscores and converting to uppercase, then paired with its value formatted as `KEY='value'`.  
+---@param env table A table where keys are environment variable names and values are their corresponding strings.  
+---@return string A space-separated string of formatted environment variables.
 function utils.build_env_string_from_params(env)
   local vars = {}
   for k, v in pairs(env) do
