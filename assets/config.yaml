@@ -6,7 +6,7 @@ namespaces:
         description: Connect to a favourite wifi network.
         interactive: false
         tags:
-          - netowrk
+          - network
         parameters:
           network:
             prompt: Choose a network
