@@ -1,0 +1,14 @@
+name: Feature Request
+description: Choose this template if you want to request a feature.
+title: "[FEATURE] <title>"
+labels:
+- kind/feature
+body:
+- type: textarea
+  attributes:
+    label: "Description"
+    description: |
+      Explain what it is you desire. Go into details about what you have considered and what
+      you expect the outcome of the feature to be.
+  validations:
+    required: true

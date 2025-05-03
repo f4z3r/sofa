@@ -1,0 +1,40 @@
+name: Bug Report
+description: Choose this template if you want to report a bug.
+title: "[BUG] <title>"
+labels:
+- kind/bug
+body:
+- type: textarea
+  attributes:
+    label: "Description"
+    description: |
+      Explain the bug/issue you are facing, and add a screenshot of any visual artefacts if applicable.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: "Expected behavior"
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: "Configuration"
+    description: |
+      Paste the configuration you are using.
+    placeholder: |
+      ```yaml
+      config:
+        shell: zsh
+        picker: fzf
+        pickers:
+          fzf:
+            default_options: "--layout=reverse --inline-info --ansi"
+      namespaces:
+        wifi:
+          commands:
+            connect:
+              command: nmcli d wifi connect '{{ network }}'
+              # ...
+      ```
+  validations:
+    required: true
