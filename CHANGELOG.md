@@ -2,6 +2,12 @@
 
 <!-- ## [Unreleased] -->
 
+## [0.6.1] - 2025-05-04
+
+### Fixed
+
+- Improve handling of empty or invalid configuration files.
+
 ## [0.6.0] - 2025-03-29
 
 ### Added
@@ -91,7 +97,8 @@
 
 Initial release.
 
-[unreleased]: https://github.com/f4z3r/sofa/compare/v0.5.2...main
+[unreleased]: https://github.com/f4z3r/sofa/compare/v0.6.1...main
+[0.6.1]: https://github.com/f4z3r/sofa/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/f4z3r/sofa/compare/v0.5.2...v0.6.0
 [0.5.2]: https://github.com/f4z3r/sofa/compare/v0.5.1...v0.5.2
 [0.5.1]: https://github.com/f4z3r/sofa/compare/v0.5.0...v0.5.1

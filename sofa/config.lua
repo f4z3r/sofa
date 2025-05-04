@@ -12,6 +12,7 @@ local DEFAULT_CONFIG_PATH = "~/.config/sofa/config.yaml"
 local CONFIG_ENV_VAR = "SOFA_CONFIG"
 
 local DEFAULT_CONFIG = {
+  namespaces = {},
   config = {
     log = "~/.local/state/sofa/sofa.log",
     shell = "bash",
@@ -36,12 +37,16 @@ local function read_config()
   local config_file = utils.expand_home(get_default_env(CONFIG_ENV_VAR, DEFAULT_CONFIG_PATH))
   local fh = io.open(config_file, "r")
   if fh == nil then
-    io.stderr:write(string.format("'%s': configuration not found", config_file))
-    os.exit(1)
+    io.stderr:write(string.format("WARN - '%s': configuration not found, using empty default config\n", config_file))
+    return DEFAULT_CONFIG
   end
   local content = fh:read("*a")
   fh:close()
-  local conf = yaml.load(content)
+  local success, conf = pcall(yaml.load, content)
+  if not success then
+    io.stderr:write("ERROR - failed to read yaml from configuration file\n")
+    os.exit(1)
+  end
   local namespaces = conf.namespaces
   conf.namespaces = {}
   for name, cmds in pairs(namespaces) do
