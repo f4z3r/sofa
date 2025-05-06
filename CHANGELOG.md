@@ -2,6 +2,12 @@
 
 <!-- ## [Unreleased] -->
 
+## [0.7.0] - 2025-05-06
+
+### Added
+
+- Create a sample default configuration if none present.
+
 ## [0.6.1] - 2025-05-04
 
 ### Fixed
@@ -97,7 +103,8 @@
 
 Initial release.
 
-[unreleased]: https://github.com/f4z3r/sofa/compare/v0.6.1...main
+[unreleased]: https://github.com/f4z3r/sofa/compare/v0.7.0...main
+[0.7.0]: https://github.com/f4z3r/sofa/compare/v0.6.1...v0.7.0
 [0.6.1]: https://github.com/f4z3r/sofa/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/f4z3r/sofa/compare/v0.5.2...v0.6.0
 [0.5.2]: https://github.com/f4z3r/sofa/compare/v0.5.1...v0.5.2
