@@ -2,6 +2,12 @@
 
 <!-- ## [Unreleased] -->
 
+## [0.8.0] - 2025-05-13
+
+### Added
+
+- Support automatically switching between pickers based on environment in which `sofa` is launched.
+
 ## [0.7.0] - 2025-05-06
 
 ### Added

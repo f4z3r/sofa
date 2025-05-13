@@ -167,7 +167,9 @@ config:
 - `log`: the log file to use. Defaults to `~/.local/state/sofa/sofa.log`.
 - `shell`: configure with what shell the command should be executed with when not running in
   interactive mode. Can be `bash`, `zsh`, `fish`. Defaults to `bash`.
-- `picker`: which picker to use. Can be either `rofi` or `fzf`. Defaults to `rofi`.
+- `picker`: which picker to use. Can be either `rofi`, `fzf`, or `auto`. Defaults to `rofi`. If
+  `auto` is set, it will detect if running with a `DISPLAY` set in order to dynamically choose
+  between `rofi` and `fzf` based on which can run.
 - `pickers`: configuration for individual pickers.
 - `pickers.fzf`: configuration for the `fzf` picker.
 - `pickers.fzf.default_options`: the default options to pass to `fzf`. Defaults to `--no-multi
