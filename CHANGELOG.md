@@ -8,6 +8,11 @@
 
 - Support automatically switching between pickers based on environment in which `sofa` is launched.
 
+### Fixed
+
+- Fixes issue where `fzf` was crashing when proving empty inputs that should be supported as custom
+  inputs (where an empty input is a valid input).
+
 ## [0.7.0] - 2025-05-06
 
 ### Added

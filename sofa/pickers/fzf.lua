@@ -208,7 +208,7 @@ function Fzf:pick_parameter(parameter, command, params)
   if custom and pick == "" then
     pick = default
   end
-  return self:_get_value_for_pick(parameter, pick)
+  return self:_get_value_for_pick(parameter, pick or "")
 end
 
 fzf.Fzf = Fzf
