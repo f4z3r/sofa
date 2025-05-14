@@ -1,5 +1,5 @@
 local package_name = "sofa"
-local package_version = "0.7.0"
+local package_version = "0.8.0"
 local rockspec_revision = "0"
 local github_account_name = "f4z3r"
 local github_repo_name = package_name
@@ -47,6 +47,7 @@ build = {
     ["sofa.pickers"] = "sofa/pickers/init.lua",
     ["sofa.pickers.rofi"] = "sofa/pickers/rofi.lua",
     ["sofa.pickers.fzf"] = "sofa/pickers/fzf.lua",
+    ["sofa.pickers.auto"] = "sofa/pickers/auto.lua",
     ["sofa.config"] = "sofa/config.lua",
     ["sofa.engine"] = "sofa/engine.lua",
     ["sofa.namespace"] = "sofa/namespace.lua",

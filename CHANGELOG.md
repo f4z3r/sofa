@@ -114,7 +114,8 @@
 
 Initial release.
 
-[unreleased]: https://github.com/f4z3r/sofa/compare/v0.7.0...main
+[unreleased]: https://github.com/f4z3r/sofa/compare/v0.8.0...main
+[0.8.0]: https://github.com/f4z3r/sofa/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/f4z3r/sofa/compare/v0.6.1...v0.7.0
 [0.6.1]: https://github.com/f4z3r/sofa/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/f4z3r/sofa/compare/v0.5.2...v0.6.0
