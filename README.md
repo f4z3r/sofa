@@ -1,33 +1,33 @@
-# sofa
+<div align="center">
+
+<img src="./assets/logo.png" alt="Sofa" width="35%">
+
+# Sofa
 
 ![GitHub License](https://img.shields.io/github/license/f4z3r/sofa?link=https%3A%2F%2Fgithub.com%2Ff4z3r%2Fsofa%2Fblob%2Fmain%2FLICENSE)
 ![GitHub Release](https://img.shields.io/github/v/release/f4z3r/sofa?logo=github&link=https%3A%2F%2Fgithub.com%2Ff4z3r%2Fsofa%2Freleases)
 ![LuaRocks](https://img.shields.io/luarocks/v/f4z3r/sofa?logo=lua&link=https%3A%2F%2Fluarocks.org%2Fmodules%2Ff4z3r%2Fsofa)
 
-A command execution engine powered by [`rofi`](https://github.com/davatorium/rofi).
+### A command execution engine powered by [`rofi`](https://github.com/davatorium/rofi) and [`fzf`](https://github.com/junegunn/fzf).
 
----
+[About](#about) |
+[Examples](#examples) |
+[Installation](#installation) |
+[Integration](#integration) |
+[Configuration](#configuration) |
+[Development](#development) |
+[Roadmap](#roadmap) |
+[License](#license)
 
-**Table of Contents:**
+<hr />
+</div>
 
-<!--toc:start-->
-- [sofa](#sofa)
-  - [Examples](#examples)
-    - [For Snippets Management](#for-snippets-management)
-    - [For Dynamic Bookmarks](#for-dynamic-bookmarks)
-    - [Features Preview](#features-preview)
-  - [Installation](#installation)
-  - [Integration](#integration)
-    - [Bash](#bash)
-    - [Zsh](#zsh)
-    - [Fish](#fish)
-  - [Configuration](#configuration)
-  - [Development](#development)
-    - [Testing](#testing)
-  - [Roadmap](#roadmap)
-<!--toc:end-->
+## About
 
----
+`sofa` is a small utility to enable easy execution of templated commands. It can be used to store
+snippets that you often rely on, or fully template complex commands. It is meant to be used with a
+shortcut manager to enable launching from anywhere, but can also inject commands into your current
+shell session for commands that make more sense to run there (see [Integration](#integration)).
 
 ## Examples
 
@@ -129,8 +129,8 @@ Install via `luarocks`:
 luarocks install sofa
 ```
 
-If you want, you can use `sofa` with [`fzf`](https://github.com/junegunn/fzf) instead of `rofi`. In
-that case, you will need `fzf` installed and should have a look at the [configuration
+If you want, you can use `sofa` with `fzf` instead of `rofi`. In that case, you will need `fzf`
+installed and should have a look at the [configuration
 section](./docs/configuration.md#other-configuration) to set `fzf` as the picker.
 
 ## Integration
@@ -228,3 +228,9 @@ This shows some items I want to support. The list is not in order of priority.
       for parameter 2)
 - [x] add support for more Lua versions
 - [ ] support executing commands in the background
+
+## License
+
+![GitHub License](https://img.shields.io/github/license/f4z3r/sofa)
+
+The license can be found under [`./LICENSE`](./LICENSE).
